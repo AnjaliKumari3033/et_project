@@ -327,3 +327,181 @@ def maintenance_template(event):
     data["safety"] = random_safety()
 
     return data
+
+# ==========================================================
+# INSPECTION TEMPLATE 1
+# ==========================================================
+
+def inspection_template_one(event):
+
+    return {
+
+        "title": "Routine Inspection Report",
+
+        "objective": f"""
+Routine inspection was conducted on
+{event['Equipment Name']} to evaluate its
+operating condition and identify any
+abnormalities.
+""",
+
+        "findings": maybe_unknown(f"""
+Inspection completed successfully.
+
+Failure Category :
+{event['Failure Category']}
+
+Severity :
+{event['Severity']}
+
+Equipment condition appears satisfactory.
+"""),
+
+        "observation": f"""
+Observed condition:
+
+{event['Description']}
+""",
+
+        "risk": "Low"
+
+    }
+
+
+# ==========================================================
+# INSPECTION TEMPLATE 2
+# ==========================================================
+
+def inspection_template_two(event):
+
+    return {
+
+        "title": "Preventive Inspection Report",
+
+        "objective": f"""
+Preventive inspection performed before
+scheduled maintenance shutdown.
+""",
+
+        "findings": maybe_unknown(f"""
+Minor abnormalities detected.
+
+Priority :
+{event['Priority']}
+
+Downtime :
+{event['Downtime (hrs)']} Hours
+"""),
+
+        "observation": f"""
+Inspection identified:
+
+{event['Root Cause']}
+""",
+
+        "risk": "Medium"
+
+    }
+
+
+# ==========================================================
+# INSPECTION TEMPLATE 3
+# ==========================================================
+
+def inspection_template_three(event):
+
+    return {
+
+        "title": "Equipment Condition Inspection",
+
+        "objective": f"""
+Inspection initiated following an operational
+complaint from {event['Department']}.
+""",
+
+        "findings": maybe_unknown(f"""
+Equipment checked for vibration,
+temperature, leakage and alignment.
+
+Status :
+
+{event['Status']}
+"""),
+
+        "observation": f"""
+Inspector observed:
+
+{event['Description']}
+""",
+
+        "risk": "Medium"
+
+    }
+
+
+# ==========================================================
+# INSPECTION TEMPLATE 4
+# ==========================================================
+
+def inspection_template_four(event):
+
+    return {
+
+        "title": "Detailed Equipment Inspection",
+
+        "objective": f"""
+Detailed inspection performed after
+maintenance completion.
+""",
+
+        "findings": maybe_unknown(f"""
+Inspection verified that corrective action
+has been completed.
+
+Asset Criticality :
+
+{event['Asset Criticality']}
+"""),
+
+        "observation": f"""
+Verification Remarks:
+
+{event['Corrective Action']}
+""",
+
+        "risk": "Low"
+
+    }
+
+
+# ==========================================================
+# MAIN INSPECTION TEMPLATE
+# ==========================================================
+
+def inspection_template(event):
+
+    templates = [
+
+        inspection_template_one,
+
+        inspection_template_two,
+
+        inspection_template_three,
+
+        inspection_template_four
+
+    ]
+
+    selected = random.choice(templates)
+
+    data = selected(event)
+
+    data["recommendation"] = random_recommendation()
+
+    data["engineer_remark"] = random_remark()
+
+    data["tool"] = random_tool()
+
+    data["safety"] = random_safety()
+
+    return data
