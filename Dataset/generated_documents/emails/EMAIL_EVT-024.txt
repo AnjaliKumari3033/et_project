@@ -1,0 +1,53 @@
+NovaChem Chemicals Pvt. Ltd.
+NovaChem Industrial Plant
+Plot No. 18, GIDC Industrial Estate,
+Vadodara, Gujarat - 390010
+
+Equipment Breakdown Notification
+
+Document Information
+
+Document Control
+
+Email Information
+
+Email Subject
+Equipment Breakdown - T-101
+Email Body
+
+Dear Team,
+
+An equipment breakdown occurred involving
+Raw Material Tank.
+
+Failure Category:
+
+Mechanical
+
+Root Cause:
+
+Seal failure
+
+Corrective Action:
+
+Seal replaced
+
+Regards,
+
+Maintenance Department
+
+Action Required
+Review maintenance schedule and monitor equipment closely.
+Previous Equipment History
+
+Linked Documents
+WO_EVT-024.docx
+MNT_EVT-024.docx
+INS_EVT-024.docx
+EMAIL_EVT-024.txt
+
+Recommendations
+Replace similar components during annual shutdown.
+
+Approval
+

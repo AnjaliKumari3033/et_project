@@ -1,0 +1,49 @@
+NovaChem Chemicals Pvt. Ltd.
+NovaChem Industrial Plant
+Plot No. 18, GIDC Industrial Estate,
+Vadodara, Gujarat - 390010
+
+Incident Follow-up Email
+
+Document Information
+
+Document Control
+
+Email Information
+
+Email Subject
+Incident Follow-up - Raw Material Tank
+Email Body
+
+Dear Team,
+
+This email is regarding the recent incident involving
+
+Raw Material Tank.
+
+Incident Summary:
+
+Emergency drill
+
+Corrective Action:
+
+Training
+
+Please ensure operational guidelines are followed.
+
+Regards,
+
+Operations Department
+
+Action Required
+Share this information with all shift supervisors.
+Previous Equipment History
+
+Linked Documents
+EMAIL_EVT-039.txt
+
+Recommendations
+Perform vibration analysis after one week.
+
+Approval
+

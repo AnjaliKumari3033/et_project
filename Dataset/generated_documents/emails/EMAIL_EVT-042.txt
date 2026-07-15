@@ -1,0 +1,53 @@
+NovaChem Chemicals Pvt. Ltd.
+NovaChem Industrial Plant
+Plot No. 18, GIDC Industrial Estate,
+Vadodara, Gujarat - 390010
+
+Equipment Breakdown Notification
+
+Document Information
+
+Document Control
+
+Email Information
+
+Email Subject
+Equipment Breakdown - CV-101
+Email Body
+
+Dear Team,
+
+An equipment breakdown occurred involving
+Control Valve.
+
+Failure Category:
+
+Mechanical
+
+Root Cause:
+
+Bearing wear
+
+Corrective Action:
+
+Bearing replaced
+
+Regards,
+
+Maintenance Department
+
+Action Required
+Review maintenance schedule and monitor equipment closely.
+Previous Equipment History
+
+Linked Documents
+WO_EVT-042.docx
+MNT_EVT-042.docx
+INS_EVT-042.docx
+EMAIL_EVT-042.txt
+
+Recommendations
+Replace similar components during annual shutdown.
+
+Approval
+

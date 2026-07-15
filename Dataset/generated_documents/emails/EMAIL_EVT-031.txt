@@ -1,0 +1,48 @@
+NovaChem Chemicals Pvt. Ltd.
+NovaChem Industrial Plant
+Plot No. 18, GIDC Industrial Estate,
+Vadodara, Gujarat - 390010
+
+Maintenance Notification Email
+
+Document Information
+
+Document Control
+
+Email Information
+
+Email Subject
+Maintenance Activity - Feed Pump
+Email Body
+
+Dear Team,
+
+This is to inform you that maintenance activity has been performed on
+Feed Pump.
+
+Issue Reported:
+
+Emergency drill
+
+Corrective Action Taken:
+
+Training
+
+Equipment has been restored to normal operating condition.
+
+Regards,
+
+Maintenance Department
+
+Action Required
+Please monitor the equipment during normal operation.
+Previous Equipment History
+
+Linked Documents
+EMAIL_EVT-031.txt
+
+Recommendations
+Continue weekly inspection.
+
+Approval
+

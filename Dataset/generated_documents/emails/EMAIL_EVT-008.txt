@@ -1,0 +1,50 @@
+NovaChem Chemicals Pvt. Ltd.
+NovaChem Industrial Plant
+Plot No. 18, GIDC Industrial Estate,
+Vadodara, Gujarat - 390010
+
+Incident Follow-up Email
+
+Document Information
+
+Document Control
+
+Email Information
+
+Email Subject
+Incident Follow-up - Chemical Reactor
+Email Body
+
+Dear Team,
+
+This email is regarding the recent incident involving
+
+Chemical Reactor.
+
+Incident Summary:
+
+Reactor inspection
+
+Corrective Action:
+
+Normal
+
+Please ensure operational guidelines are followed.
+
+Regards,
+
+Operations Department
+
+Action Required
+Share this information with all shift supervisors.
+Previous Equipment History
+
+Linked Documents
+INS_EVT-008.docx
+EMAIL_EVT-008.txt
+
+Recommendations
+Monitor bearing temperature daily.
+
+Approval
+

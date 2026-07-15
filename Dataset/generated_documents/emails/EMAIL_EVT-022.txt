@@ -1,0 +1,51 @@
+NovaChem Chemicals Pvt. Ltd.
+NovaChem Industrial Plant
+Plot No. 18, GIDC Industrial Estate,
+Vadodara, Gujarat - 390010
+
+Maintenance Notification Email
+
+Document Information
+
+Document Control
+
+Email Information
+
+Email Subject
+Maintenance Activity - Cooling Tower
+Email Body
+
+Dear Team,
+
+This is to inform you that maintenance activity has been performed on
+Cooling Tower.
+
+Issue Reported:
+
+Minor spill
+
+Corrective Action Taken:
+
+Flange tightened
+
+Equipment has been restored to normal operating condition.
+
+Regards,
+
+Maintenance Department
+
+Action Required
+Please monitor the equipment during normal operation.
+Previous Equipment History
+
+Linked Documents
+WO_EVT-022.docx
+MNT_EVT-022.docx
+INS_EVT-022.docx
+EMAIL_EVT-022.txt
+
+Recommendations
+Monitor bearing temperature daily.
+
+Approval
+

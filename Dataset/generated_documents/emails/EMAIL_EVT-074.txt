@@ -1,0 +1,52 @@
+NovaChem Chemicals Pvt. Ltd.
+NovaChem Industrial Plant
+Plot No. 18, GIDC Industrial Estate,
+Vadodara, Gujarat - 390010
+
+Inspection Completion Email
+
+Document Information
+
+Document Control
+
+Email Information
+
+Email Subject
+Inspection Completed - Temperature Gauge
+Email Body
+
+Dear Team,
+
+Inspection activities have been completed successfully.
+
+Equipment:
+
+Temperature Gauge
+
+Inspection Findings:
+
+Abnormal vibration
+
+Status:
+
+Open
+
+Regards,
+
+Inspection Team
+
+Action Required
+No further action is required unless abnormality is observed.
+Previous Equipment History
+
+Linked Documents
+WO_EVT-074.docx
+MNT_EVT-074.docx
+INS_EVT-074.docx
+EMAIL_EVT-074.txt
+
+Recommendations
+Schedule detailed equipment health assessment.
+
+Approval
+

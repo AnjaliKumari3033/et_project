@@ -1,0 +1,53 @@
+NovaChem Chemicals Pvt. Ltd.
+NovaChem Industrial Plant
+Plot No. 18, GIDC Industrial Estate,
+Vadodara, Gujarat - 390010
+
+Equipment Breakdown Notification
+
+Document Information
+
+Document Control
+
+Email Information
+
+Email Subject
+Equipment Breakdown - V-101
+Email Body
+
+Dear Team,
+
+An equipment breakdown occurred involving
+Relief Valve.
+
+Failure Category:
+
+Instrumentation
+
+Root Cause:
+
+Routine
+
+Corrective Action:
+
+Calibrated
+
+Regards,
+
+Maintenance Department
+
+Action Required
+Review maintenance schedule and monitor equipment closely.
+Previous Equipment History
+
+Linked Documents
+WO_EVT-045.docx
+MNT_EVT-045.docx
+INS_EVT-045.docx
+EMAIL_EVT-045.txt
+
+Recommendations
+Perform vibration analysis after one week.
+
+Approval
+

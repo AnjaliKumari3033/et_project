@@ -1,0 +1,53 @@
+NovaChem Chemicals Pvt. Ltd.
+NovaChem Industrial Plant
+Plot No. 18, GIDC Industrial Estate,
+Vadodara, Gujarat - 390010
+
+Equipment Breakdown Notification
+
+Document Information
+
+Document Control
+
+Email Information
+
+Email Subject
+Equipment Breakdown - M-101
+Email Body
+
+Dear Team,
+
+An equipment breakdown occurred involving
+Agitator.
+
+Failure Category:
+
+Instrumentation
+
+Root Cause:
+
+Routine schedule
+
+Corrective Action:
+
+Serviced
+
+Regards,
+
+Maintenance Department
+
+Action Required
+Review maintenance schedule and monitor equipment closely.
+Previous Equipment History
+
+Linked Documents
+WO_EVT-041.docx
+MNT_EVT-041.docx
+INS_EVT-041.docx
+EMAIL_EVT-041.txt
+
+Recommendations
+Perform vibration analysis after one week.
+
+Approval
+

@@ -1,0 +1,52 @@
+NovaChem Chemicals Pvt. Ltd.
+NovaChem Industrial Plant
+Plot No. 18, GIDC Industrial Estate,
+Vadodara, Gujarat - 390010
+
+Inspection Completion Email
+
+Document Information
+
+Document Control
+
+Email Information
+
+Email Subject
+Inspection Completed - Feed Pump
+Email Body
+
+Dear Team,
+
+Inspection activities have been completed successfully.
+
+Equipment:
+
+Feed Pump
+
+Inspection Findings:
+
+Mechanical seal leakage
+
+Status:
+
+Closed
+
+Regards,
+
+Inspection Team
+
+Action Required
+No further action is required unless abnormality is observed.
+Previous Equipment History
+
+Linked Documents
+WO_EVT-004.docx
+MNT_EVT-004.docx
+INS_EVT-004.docx
+EMAIL_EVT-004.txt
+
+Recommendations
+Continue weekly inspection.
+
+Approval
+

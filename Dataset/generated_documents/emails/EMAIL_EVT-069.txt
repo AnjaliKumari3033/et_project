@@ -1,0 +1,52 @@
+NovaChem Chemicals Pvt. Ltd.
+NovaChem Industrial Plant
+Plot No. 18, GIDC Industrial Estate,
+Vadodara, Gujarat - 390010
+
+Inspection Completion Email
+
+Document Information
+
+Document Control
+
+Email Information
+
+Email Subject
+Inspection Completed - Raw Material Tank
+Email Body
+
+Dear Team,
+
+Inspection activities have been completed successfully.
+
+Equipment:
+
+Raw Material Tank
+
+Inspection Findings:
+
+Instrument calibration
+
+Status:
+
+Closed
+
+Regards,
+
+Inspection Team
+
+Action Required
+No further action is required unless abnormality is observed.
+Previous Equipment History
+
+Linked Documents
+WO_EVT-069.docx
+MNT_EVT-069.docx
+INS_EVT-069.docx
+EMAIL_EVT-069.txt
+
+Recommendations
+Check lubrication schedule.
+
+Approval
+

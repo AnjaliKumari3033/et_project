@@ -1,0 +1,50 @@
+NovaChem Chemicals Pvt. Ltd.
+NovaChem Industrial Plant
+Plot No. 18, GIDC Industrial Estate,
+Vadodara, Gujarat - 390010
+
+Equipment Breakdown Notification
+
+Document Information
+
+Document Control
+
+Email Information
+
+Email Subject
+Equipment Breakdown - F-101
+Email Body
+
+Dear Team,
+
+An equipment breakdown occurred involving
+Pressure Filter.
+
+Failure Category:
+
+Instrumentation
+
+Root Cause:
+
+Calibration drift
+
+Corrective Action:
+
+Recalibrated
+
+Regards,
+
+Maintenance Department
+
+Action Required
+Review maintenance schedule and monitor equipment closely.
+Previous Equipment History
+
+Linked Documents
+EMAIL_EVT-068.txt
+
+Recommendations
+Monitor bearing temperature daily.
+
+Approval
+
