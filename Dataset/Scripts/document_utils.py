@@ -228,9 +228,13 @@ def add_text(doc, text):
 # SUMMARY TABLE
 # ==========================================================
 
-def add_summary_table(doc, event):
+# ==========================================================
+# SUMMARY TABLE
+# ==========================================================
 
-    doc.add_heading("Maintenance Summary", level=1)
+def add_summary_table(doc, event, title="Maintenance Summary"):
+
+    doc.add_heading(title, level=1)
 
     table = doc.add_table(rows=6, cols=2)
 
@@ -323,14 +327,16 @@ def add_spare_parts(doc, event):
 
 
 # ==========================================================
-# INSPECTION CHECKLIST
+# CHECKLIST
 # ==========================================================
-# allow_variation=True occasionally leaves one item unticked,
-# so not every report reads as a 100% flawless outcome.
 
-def add_checklist(doc, allow_variation=True):
+def add_checklist(
+    doc,
+    allow_variation=True,
+    title="Maintenance Checklist"
+):
 
-    doc.add_heading("Maintenance Checklist", level=1)
+    doc.add_heading(title, level=1)
 
     checklist = [
         "Lock Out / Tag Out (LOTO) Followed",
@@ -518,5 +524,323 @@ def add_history(doc, history_df):
         cells[2].text = str(row["Root Cause"])
 
         cells[3].text = str(row["Status"])
+
+    doc.add_paragraph()
+
+# ==========================================================
+# WORK ORDER INFORMATION
+# ==========================================================
+
+def add_workorder_information(doc, event):
+
+    doc.add_heading("Work Order Information", level=1)
+
+    table = doc.add_table(rows=8, cols=2)
+
+    table.style = "Table Grid"
+
+    values = [
+
+        ("Work Order Number", f"WO_{event['Event ID'].replace('EVT', '')}"),
+
+        ("Event ID", event["Event ID"]),
+
+        ("Assigned To", event["Assigned To"]),
+
+        ("Department", event["Department"]),
+
+        ("Priority", event["Priority"]),
+
+        ("Status", event["Status"]),
+
+        ("Shift", event["Shift"]),
+
+        ("Planned Duration",
+         f"{event['Downtime (hrs)']} Hours")
+
+    ]
+
+    for row, item in zip(table.rows, values):
+
+        row.cells[0].text = item[0]
+
+        row.cells[1].text = str(item[1])
+
+    doc.add_paragraph()
+
+# ==========================================================
+# REQUIRED RESOURCES
+# ==========================================================
+
+def add_required_resources(doc, event, tool):
+
+    doc.add_heading("Required Resources", level=1)
+
+    table = doc.add_table(rows=4, cols=2)
+
+    table.style = "Table Grid"
+
+    values = [
+
+        ("Assigned Technician",
+         event["Assigned To"]),
+
+        ("Required Tool",
+         tool),
+
+        ("Department",
+         event["Department"]),
+
+        ("Failure Category",
+         event["Failure Category"])
+
+    ]
+
+    for row, item in zip(table.rows, values):
+
+        row.cells[0].text = item[0]
+
+        row.cells[1].text = str(item[1])
+
+    doc.add_paragraph()
+
+# ==========================================================
+# ESTIMATED DURATION
+# ==========================================================
+
+def add_estimated_duration(doc, duration):
+
+    doc.add_heading("Estimated Duration", level=1)
+
+    doc.add_paragraph(str(duration))
+
+    doc.add_paragraph()
+
+# ==========================================================
+# SAFETY REQUIREMENTS
+# ==========================================================
+
+def add_safety_requirements(doc, text):
+
+    doc.add_heading("Safety Requirements", level=1)
+
+    doc.add_paragraph(str(text))
+
+    doc.add_paragraph()
+
+# ==========================================================
+# SPECIAL INSTRUCTIONS
+# ==========================================================
+
+def add_special_instructions(doc, text):
+
+    doc.add_heading("Special Instructions", level=1)
+
+    doc.add_paragraph(str(text))
+
+    doc.add_paragraph()
+
+# ==========================================================
+# INCIDENT INFORMATION
+# ==========================================================
+
+def add_incident_information(doc, event):
+
+    doc.add_heading("Incident Information", level=1)
+
+    table = doc.add_table(rows=8, cols=2)
+
+    table.style = "Table Grid"
+
+    values = [
+
+        ("Incident Number", f"INC_{event['Event ID'].replace('EVT', '')}"),
+
+        ("Event ID", event["Event ID"]),
+
+        ("Date", str(event["Date"])),
+
+        ("Department", event["Department"]),
+
+        ("Area", event["Area"]),
+
+        ("Shift", event["Shift"]),
+
+        ("Reported By", event["Reported_From"]),
+
+        ("Status", event["Status"])
+
+    ]
+
+    for row, item in zip(table.rows, values):
+
+        row.cells[0].text = str(item[0])
+
+        row.cells[1].text = str(item[1])
+
+    doc.add_paragraph()
+
+# ==========================================================
+# IMMEDIATE ACTION
+# ==========================================================
+
+def add_immediate_action(doc, text):
+
+    doc.add_heading("Immediate Action Taken", level=1)
+
+    doc.add_paragraph(str(text))
+
+    doc.add_paragraph()
+
+# ==========================================================
+# IMPACT ASSESSMENT
+# ==========================================================
+
+def add_impact_assessment(doc, event):
+
+    doc.add_heading("Impact Assessment", level=1)
+
+    table = doc.add_table(rows=4, cols=2)
+
+    table.style = "Table Grid"
+
+    values = [
+
+        ("Severity", event["Severity"]),
+
+        ("Priority", event["Priority"]),
+
+        ("Downtime", f"{event['Downtime (hrs)']} Hours"),
+
+        ("Asset Criticality", event["Asset Criticality"])
+
+    ]
+
+    for row, item in zip(table.rows, values):
+
+        row.cells[0].text = str(item[0])
+
+        row.cells[1].text = str(item[1])
+
+    doc.add_paragraph()
+
+# ==========================================================
+# ROOT CAUSE
+# ==========================================================
+
+def add_root_cause(doc, event):
+
+    doc.add_heading("Root Cause", level=1)
+
+    doc.add_paragraph(str(event["Root Cause"]))
+
+    doc.add_paragraph()
+
+# ==========================================================
+# SAFETY CLASSIFICATION
+# ==========================================================
+
+def add_safety_classification(doc, event):
+
+    doc.add_heading("Safety Classification", level=1)
+
+    table = doc.add_table(rows=3, cols=2)
+
+    table.style = "Table Grid"
+
+    values = [
+
+        ("Failure Category", event["Failure Category"]),
+
+        ("Severity", event["Severity"]),
+
+        ("Follow-up Required", event["Follow-up Required"])
+
+    ]
+
+    for row, item in zip(table.rows, values):
+
+        row.cells[0].text = str(item[0])
+
+        row.cells[1].text = str(item[1])
+
+    doc.add_paragraph()
+
+    # ==========================================================
+# EMAIL INFORMATION
+# ==========================================================
+
+def add_email_information(doc, event, template):
+
+    doc.add_heading("Email Information", level=1)
+
+    table = doc.add_table(rows=5, cols=2)
+
+    table.style = "Table Grid"
+
+    values = [
+
+        ("To", f"{event['Department']} Department"),
+
+        ("From", event["Assigned To"]),
+
+        ("Subject", template["subject"]),
+
+        ("Date", str(event["Date"])),
+
+        ("Related Event", event["Event ID"])
+
+    ]
+
+    for row, item in zip(table.rows, values):
+
+        row.cells[0].text = str(item[0])
+
+        row.cells[1].text = str(item[1])
+
+    doc.add_paragraph()
+
+# ==========================================================
+# RCA INFORMATION
+# ==========================================================
+
+def add_rca_information(doc, event):
+
+    doc.add_heading("RCA Information", level=1)
+
+    table = doc.add_table(rows=7, cols=2)
+
+    table.style = "Table Grid"
+
+    values = [
+
+        ("RCA Number",
+         f"RCA_{event['Event ID'].replace('EVT', '')}"),
+
+        ("Event ID",
+         event["Event ID"]),
+
+        ("Department",
+         event["Department"]),
+
+        ("Reported By",
+         event["Reported_From"]),
+
+        ("Assigned To",
+         event["Assigned To"]),
+
+        ("Priority",
+         event["Priority"]),
+
+        ("Status",
+         event["Status"])
+
+    ]
+
+    for row, item in zip(table.rows, values):
+
+        row.cells[0].text = str(item[0])
+
+        row.cells[1].text = str(item[1])
 
     doc.add_paragraph()

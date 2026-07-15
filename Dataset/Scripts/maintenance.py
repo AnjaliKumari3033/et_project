@@ -176,7 +176,10 @@ for _, event in events.iterrows():
     # SUMMARY
     # ======================================================
 
-    add_summary_table(doc, event)
+    add_summary_table(
+        doc,
+        event
+    )
 
     # ======================================================
     # HISTORY

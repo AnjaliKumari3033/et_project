@@ -505,3 +505,774 @@ def inspection_template(event):
     data["safety"] = random_safety()
 
     return data
+
+# ==========================================================
+# WORK SCOPES
+# ==========================================================
+
+WORK_SCOPES = [
+
+    "Replace failed component and restore equipment to normal operation.",
+
+    "Inspect equipment, identify defects and perform necessary repairs.",
+
+    "Carry out preventive maintenance activities as per maintenance schedule.",
+
+    "Verify equipment alignment, lubrication and operational parameters.",
+
+    "Repair damaged components and perform functional testing.",
+
+    "Perform calibration and verify instrument accuracy.",
+
+    "Conduct mechanical inspection and replace worn-out parts.",
+
+    "Rectify reported fault and return equipment to service."
+
+]
+
+# ==========================================================
+# SAFETY REQUIREMENTS
+# ==========================================================
+
+SAFETY_REQUIREMENTS = [
+
+    "Follow Lock Out / Tag Out (LOTO) procedure before work.",
+
+    "Wear mandatory PPE throughout the maintenance activity.",
+
+    "Obtain valid Permit To Work (PTW) before starting work.",
+
+    "Ensure equipment is electrically isolated before repair.",
+
+    "Barricade work area to prevent unauthorized access.",
+
+    "Verify zero energy state before maintenance."
+
+]
+
+# ==========================================================
+# SPECIAL INSTRUCTIONS
+# ==========================================================
+
+SPECIAL_INSTRUCTIONS = [
+
+    "Complete work before end of shift.",
+
+    "Inform operations before equipment restart.",
+
+    "Record all observations in maintenance log.",
+
+    "Return replaced parts to maintenance store.",
+
+    "Perform trial run in presence of production engineer.",
+
+    "Notify supervisor immediately if additional defects are found."
+
+]
+
+# ==========================================================
+# RANDOM WORK SCOPE
+# ==========================================================
+
+def random_work_scope():
+
+    return random.choice(WORK_SCOPES)
+
+
+# ==========================================================
+# RANDOM SAFETY REQUIREMENT
+# ==========================================================
+
+def random_safety_requirement():
+
+    return random.choice(SAFETY_REQUIREMENTS)
+
+
+# ==========================================================
+# RANDOM SPECIAL INSTRUCTION
+# ==========================================================
+
+def random_special_instruction():
+
+    return random.choice(SPECIAL_INSTRUCTIONS)
+
+# ==========================================================
+# WORK ORDER TEMPLATE 1
+# ==========================================================
+
+def workorder_template_one(event):
+
+    return {
+
+        "title": "Corrective Work Order",
+
+        "problem": f"""
+Equipment reported the following issue:
+
+{event['Description']}
+""",
+
+        "scope": random_work_scope(),
+
+        "duration": f"{event['Downtime (hrs)']} Hours"
+
+    }
+
+# ==========================================================
+# WORK ORDER TEMPLATE 2
+# ==========================================================
+
+def workorder_template_two(event):
+
+    return {
+
+        "title": "Preventive Maintenance Work Order",
+
+        "problem": f"""
+Scheduled maintenance activity for
+
+{event['Equipment Name']}
+
+Priority :
+
+{event['Priority']}
+""",
+
+        "scope": random_work_scope(),
+
+        "duration": f"{event['Downtime (hrs)']} Hours"
+
+    }
+
+# ==========================================================
+# WORK ORDER TEMPLATE 3
+# ==========================================================
+
+def workorder_template_three(event):
+
+    return {
+
+        "title": "Emergency Work Order",
+
+        "problem": f"""
+Emergency response required for
+
+{event['Equipment Name']}.
+
+Issue:
+
+{event['Description']}
+""",
+
+        "scope": random_work_scope(),
+
+        "duration": f"{event['Downtime (hrs)']} Hours"
+
+    }
+
+# ==========================================================
+# WORK ORDER TEMPLATE 4
+# ==========================================================
+
+def workorder_template_four(event):
+
+    return {
+
+        "title": "Equipment Repair Work Order",
+
+        "problem": f"""
+Repair request generated for
+
+Equipment ID :
+
+{event['Equipment ID']}
+
+Reported Issue :
+
+{event['Description']}
+""",
+
+        "scope": random_work_scope(),
+
+        "duration": f"{event['Downtime (hrs)']} Hours"
+
+    }
+
+# ==========================================================
+# MAIN WORK ORDER TEMPLATE
+# ==========================================================
+
+def workorder_template(event):
+
+    templates = [
+
+        workorder_template_one,
+        workorder_template_two,
+        workorder_template_three,
+        workorder_template_four
+
+    ]
+
+    selected = random.choice(templates)
+
+    data = selected(event)
+
+    data["tool"] = random_tool()
+
+    data["safety"] = random_safety_requirement()
+
+    data["instruction"] = random_special_instruction()
+
+    return data
+
+# ==========================================================
+# INCIDENT TEMPLATE 1
+# ==========================================================
+
+def incident_template_one(event):
+
+    return {
+
+        "title": "Equipment Incident Report",
+
+        "description": f"""
+An incident was reported involving
+
+{event['Equipment Name']}
+
+Description:
+
+{event['Description']}
+""",
+
+        "root_cause": maybe_unknown(f"""
+Initial investigation indicates:
+
+{event['Root Cause']}
+"""),
+
+        "action": f"""
+Immediate corrective action taken:
+
+{event['Corrective Action']}
+"""
+    }
+
+# ==========================================================
+# INCIDENT TEMPLATE 2
+# ==========================================================
+
+def incident_template_two(event):
+
+    return {
+
+        "title": "Operational Incident Report",
+
+        "description": f"""
+During routine plant operation an incident
+occurred involving equipment
+
+{event['Equipment ID']}
+
+Issue Reported:
+
+{event['Description']}
+""",
+
+        "root_cause": maybe_unknown(f"""
+Failure Category:
+
+{event['Failure Category']}
+
+Root Cause:
+
+{event['Root Cause']}
+"""),
+
+        "action": f"""
+Operations team responded immediately.
+
+Corrective Action:
+
+{event['Corrective Action']}
+"""
+    }
+
+# ==========================================================
+# INCIDENT TEMPLATE 3
+# ==========================================================
+
+def incident_template_three(event):
+
+    return {
+
+        "title": "Safety Incident Report",
+
+        "description": f"""
+An operational abnormality was observed
+during the {event['Shift']} shift.
+
+Observation:
+
+{event['Description']}
+""",
+
+        "root_cause": maybe_unknown(f"""
+Severity:
+
+{event['Severity']}
+
+Priority:
+
+{event['Priority']}
+
+Root Cause:
+
+{event['Root Cause']}
+"""),
+
+        "action": f"""
+Maintenance team secured the equipment
+and carried out the following action:
+
+{event['Corrective Action']}
+"""
+    }
+
+# ==========================================================
+# INCIDENT TEMPLATE 4
+# ==========================================================
+
+def incident_template_four(event):
+
+    return {
+
+        "title": "Equipment Failure Incident",
+
+        "description": f"""
+Equipment
+
+{event['Equipment Name']}
+
+experienced an operational failure.
+
+Reported Problem:
+
+{event['Description']}
+""",
+
+        "root_cause": maybe_unknown(f"""
+Asset Criticality:
+
+{event['Asset Criticality']}
+
+Root Cause:
+
+{event['Root Cause']}
+"""),
+
+        "action": f"""
+Corrective maintenance performed.
+
+Action Details:
+
+{event['Corrective Action']}
+"""
+    }
+
+# ==========================================================
+# MAIN INCIDENT TEMPLATE
+# ==========================================================
+
+def incident_template(event):
+
+    templates = [
+
+        incident_template_one,
+
+        incident_template_two,
+
+        incident_template_three,
+
+        incident_template_four
+
+    ]
+
+    selected = random.choice(templates)
+
+    data = selected(event)
+
+    data["recommendation"] = random_recommendation()
+
+    data["engineer_remark"] = random_remark()
+
+    data["tool"] = random_tool()
+
+    data["safety"] = random_safety()
+
+    return data
+
+# ==========================================================
+# EMAIL TEMPLATE 1
+# ==========================================================
+
+def email_template_one(event):
+
+    return {
+
+        "title": "Maintenance Notification Email",
+
+        "subject": f"Maintenance Activity - {event['Equipment Name']}",
+
+        "body": f"""
+Dear Team,
+
+This is to inform you that maintenance activity has been performed on
+{event['Equipment Name']}.
+
+Issue Reported:
+
+{event['Description']}
+
+Corrective Action Taken:
+
+{event['Corrective Action']}
+
+Equipment has been restored to normal operating condition.
+
+Regards,
+
+Maintenance Department
+""",
+
+        "action": "Please monitor the equipment during normal operation."
+
+    }
+
+
+# ==========================================================
+# EMAIL TEMPLATE 2
+# ==========================================================
+
+def email_template_two(event):
+
+    return {
+
+        "title": "Equipment Breakdown Notification",
+
+        "subject": f"Equipment Breakdown - {event['Equipment ID']}",
+
+        "body": f"""
+Dear Team,
+
+An equipment breakdown occurred involving
+{event['Equipment Name']}.
+
+Failure Category:
+
+{event['Failure Category']}
+
+Root Cause:
+
+{event['Root Cause']}
+
+Corrective Action:
+
+{event['Corrective Action']}
+
+Regards,
+
+Maintenance Department
+""",
+
+        "action": "Review maintenance schedule and monitor equipment closely."
+
+    }
+
+
+# ==========================================================
+# EMAIL TEMPLATE 3
+# ==========================================================
+
+def email_template_three(event):
+
+    return {
+
+        "title": "Inspection Completion Email",
+
+        "subject": f"Inspection Completed - {event['Equipment Name']}",
+
+        "body": f"""
+Dear Team,
+
+Inspection activities have been completed successfully.
+
+Equipment:
+
+{event['Equipment Name']}
+
+Inspection Findings:
+
+{event['Description']}
+
+Status:
+
+{event['Status']}
+
+Regards,
+
+Inspection Team
+""",
+
+        "action": "No further action is required unless abnormality is observed."
+
+    }
+
+
+# ==========================================================
+# EMAIL TEMPLATE 4
+# ==========================================================
+
+def email_template_four(event):
+
+    return {
+
+        "title": "Incident Follow-up Email",
+
+        "subject": f"Incident Follow-up - {event['Equipment Name']}",
+
+        "body": f"""
+Dear Team,
+
+This email is regarding the recent incident involving
+
+{event['Equipment Name']}.
+
+Incident Summary:
+
+{event['Description']}
+
+Corrective Action:
+
+{event['Corrective Action']}
+
+Please ensure operational guidelines are followed.
+
+Regards,
+
+Operations Department
+""",
+
+        "action": "Share this information with all shift supervisors."
+
+    }
+
+
+# ==========================================================
+# MAIN EMAIL TEMPLATE
+# ==========================================================
+
+def email_template(event):
+
+    templates = [
+
+        email_template_one,
+
+        email_template_two,
+
+        email_template_three,
+
+        email_template_four
+
+    ]
+
+    selected = random.choice(templates)
+
+    data = selected(event)
+
+    data["recommendation"] = random_recommendation()
+
+    data["engineer_remark"] = random_remark()
+
+    return data
+
+# ==========================================================
+# RCA TEMPLATE 1
+# ==========================================================
+
+def rca_template_one(event):
+
+    return {
+
+        "title": "Root Cause Analysis Report",
+
+        "problem": f"""
+Equipment {event['Equipment Name']} experienced the
+following issue:
+
+{event['Description']}
+""",
+
+        "root_cause": maybe_unknown(f"""
+Investigation identified the probable root cause:
+
+{event['Root Cause']}
+"""),
+
+        "corrective_action": f"""
+Corrective action implemented:
+
+{event['Corrective Action']}
+""",
+
+        "preventive_action":
+        "Increase inspection frequency and monitor equipment performance."
+
+    }
+
+
+# ==========================================================
+# RCA TEMPLATE 2
+# ==========================================================
+
+def rca_template_two(event):
+
+    return {
+
+        "title": "Equipment Failure RCA",
+
+        "problem": f"""
+Failure occurred in
+
+{event['Equipment Name']}
+
+Failure Category:
+
+{event['Failure Category']}
+""",
+
+        "root_cause": maybe_unknown(f"""
+Detailed investigation concluded:
+
+{event['Root Cause']}
+"""),
+
+        "corrective_action": f"""
+Maintenance team performed:
+
+{event['Corrective Action']}
+""",
+
+        "preventive_action":
+        "Review preventive maintenance schedule."
+
+    }
+
+
+# ==========================================================
+# RCA TEMPLATE 3
+# ==========================================================
+
+def rca_template_three(event):
+
+    return {
+
+        "title": "Operational Root Cause Analysis",
+
+        "problem": f"""
+Operational abnormality reported during
+
+{event['Shift']} shift.
+
+Description:
+
+{event['Description']}
+""",
+
+        "root_cause": maybe_unknown(f"""
+Primary cause identified:
+
+{event['Root Cause']}
+"""),
+
+        "corrective_action": f"""
+Corrective measures:
+
+{event['Corrective Action']}
+""",
+
+        "preventive_action":
+        "Provide additional operator training."
+
+    }
+
+
+# ==========================================================
+# RCA TEMPLATE 4
+# ==========================================================
+
+def rca_template_four(event):
+
+    return {
+
+        "title": "Equipment Reliability RCA",
+
+        "problem": f"""
+Reliability issue reported for
+
+{event['Equipment ID']}
+
+Equipment:
+
+{event['Equipment Name']}
+""",
+
+        "root_cause": maybe_unknown(f"""
+Failure analysis indicates:
+
+{event['Root Cause']}
+"""),
+
+        "corrective_action": f"""
+Maintenance completed:
+
+{event['Corrective Action']}
+""",
+
+        "preventive_action":
+        "Perform condition monitoring every week."
+
+    }
+
+
+# ==========================================================
+# MAIN RCA TEMPLATE
+# ==========================================================
+
+def rca_template(event):
+
+    templates = [
+
+        rca_template_one,
+
+        rca_template_two,
+
+        rca_template_three,
+
+        rca_template_four
+
+    ]
+
+    selected = random.choice(templates)
+
+    data = selected(event)
+
+    data["recommendation"] = random_recommendation()
+
+    data["engineer_remark"] = random_remark()
+
+    data["tool"] = random_tool()
+
+    data["safety"] = random_safety()
+
+    return data

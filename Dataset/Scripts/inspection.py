@@ -194,7 +194,8 @@ for _, event in events.iterrows():
 
     add_summary_table(
         doc,
-        event
+        event,
+        title="Inspection Summary"
     )
 
 # ======================================================
@@ -212,13 +213,22 @@ for _, event in events.iterrows():
         history
     )
 
+    # ======================================================
+# ROOT CAUSE
+# ======================================================
+
+    add_section(doc, "Root Cause")
+
+    add_text(doc, event["Root Cause"])
+
 # ======================================================
 # CHECKLIST
 # ======================================================
 
     add_checklist(
         doc,
-        allow_variation=ENABLE_RANDOM_MISSING_FIELDS
+        allow_variation=ENABLE_RANDOM_MISSING_FIELDS,
+        title="Inspection Checklist"
     )
 
 # ======================================================
