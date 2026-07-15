@@ -1276,3 +1276,712 @@ def rca_template(event):
     data["safety"] = random_safety()
 
     return data
+
+# ==========================================================
+# QUALITY TEMPLATE 1
+# ==========================================================
+
+
+def quality_template_one(event):
+
+    return {
+
+        "title": "Quality Inspection Report",
+
+        "description": f"""
+Quality issue identified during inspection
+of equipment:
+
+Equipment Name:
+{event['Equipment Name']}
+
+Reported Issue:
+
+{event['Description']}
+""",
+
+        "findings": maybe_unknown(f"""
+Quality inspection findings:
+
+Failure Category:
+{event['Failure Category']}
+
+Severity:
+{event['Severity']}
+
+Priority:
+{event['Priority']}
+
+Equipment condition requires corrective action.
+"""),
+
+
+        "non_conformance": f"""
+Non-conformance observed due to:
+
+{event['Root Cause']}
+
+The issue affected normal equipment performance.
+""",
+
+
+        "verification": """
+Corrective action verification completed.
+
+Equipment performance checked and found
+within acceptable operating parameters.
+""",
+
+
+        "status": "Quality issue resolved and closed."
+
+    }
+
+
+
+# ==========================================================
+# QUALITY TEMPLATE 2
+# ==========================================================
+
+
+def quality_template_two(event):
+
+    return {
+
+        "title": "Non Conformance Quality Report",
+
+        "description": f"""
+A quality deviation was reported for:
+
+{event['Equipment Name']}
+
+Observation:
+
+{event['Description']}
+""",
+
+
+        "findings": maybe_unknown(f"""
+Detailed quality analysis performed.
+
+Asset Criticality:
+
+{event['Asset Criticality']}
+
+Status:
+
+{event['Status']}
+"""),
+
+
+        "non_conformance": f"""
+Non-conformance was linked with:
+
+Failure Category:
+
+{event['Failure Category']}
+
+Root Cause:
+
+{event['Root Cause']}
+""",
+
+
+        "verification": """
+Corrective action effectiveness verified
+through operational testing.
+""",
+
+
+        "status": "Accepted after corrective action implementation."
+
+    }
+
+
+
+# ==========================================================
+# QUALITY TEMPLATE 3
+# ==========================================================
+
+
+def quality_template_three(event):
+
+    return {
+
+        "title": "Equipment Quality Assessment Report",
+
+
+        "description": f"""
+Quality assessment initiated after abnormal
+equipment behavior.
+
+Equipment:
+
+{event['Equipment Name']}
+
+Issue:
+
+{event['Description']}
+""",
+
+
+        "findings": maybe_unknown(f"""
+Assessment findings:
+
+Severity:
+{event['Severity']}
+
+Failure Category:
+{event['Failure Category']}
+
+Inspection completed successfully.
+"""),
+
+
+        "non_conformance": f"""
+Detected non-conformance:
+
+{event['Root Cause']}
+
+Corrective measures recommended.
+""",
+
+
+        "verification": """
+Follow-up inspection completed.
+
+Equipment performance monitored after repair.
+""",
+
+
+        "status": "Monitoring required after corrective action."
+
+    }
+
+
+
+# ==========================================================
+# QUALITY TEMPLATE 4
+# ==========================================================
+
+
+def quality_template_four(event):
+
+    return {
+
+        "title": "Quality Failure Investigation Report",
+
+
+        "description": f"""
+Investigation started for quality related
+failure involving:
+
+Equipment ID:
+
+{event['Equipment ID']}
+
+
+Problem Description:
+
+{event['Description']}
+""",
+
+
+        "findings": maybe_unknown(f"""
+Investigation findings:
+
+Root Cause Category:
+
+{event['Failure Category']}
+
+Priority:
+
+{event['Priority']}
+"""),
+
+
+        "non_conformance": f"""
+Quality failure occurred because:
+
+{event['Root Cause']}
+
+Corrective action:
+
+{event['Corrective Action']}
+""",
+
+
+        "verification": """
+Verification carried out after corrective
+maintenance activity.
+
+No further abnormality observed.
+""",
+
+
+        "status": "Investigation completed."
+
+    }
+
+
+
+# ==========================================================
+# MAIN QUALITY TEMPLATE
+# ==========================================================
+
+
+def quality_template(event):
+
+
+    templates = [
+
+        quality_template_one,
+
+        quality_template_two,
+
+        quality_template_three,
+
+        quality_template_four
+
+    ]
+
+
+    selected = random.choice(templates)
+
+
+    data = selected(event)
+
+
+    data["recommendation"] = random_recommendation()
+
+
+    data["engineer_remark"] = random_remark()
+
+
+    data["tool"] = random_tool()
+
+
+    data["safety"] = random_safety()
+
+
+    return data
+
+# ==========================================================
+# SAFETY TEMPLATE 1
+# ==========================================================
+
+def safety_template_one(event):
+
+    return {
+
+        "title": "Safety Observation Report",
+
+        "description": f"""
+Safety observation recorded for:
+
+Equipment Name:
+{event['Equipment Name']}
+
+Observation:
+
+{event['Description']}
+""",
+
+
+        "hazard": f"""
+Potential hazard identified:
+
+Failure Category:
+
+{event['Failure Category']}
+
+Severity:
+
+{event['Severity']}
+""",
+
+
+        "risk": f"""
+Risk Level:
+
+{event['Severity']}
+
+Asset Criticality:
+
+{event['Asset Criticality']}
+""",
+
+
+        "immediate_action": f"""
+Immediate action taken:
+
+{event['Corrective Action']}
+""",
+
+
+        "preventive_action": """
+Conduct regular safety inspections
+and ensure compliance with safety procedures.
+"""
+
+    }
+
+
+
+# ==========================================================
+# SAFETY TEMPLATE 2
+# ==========================================================
+
+def safety_template_two(event):
+
+    return {
+
+        "title": "Safety Incident Investigation",
+
+
+        "description": f"""
+Safety incident occurred during:
+
+{event['Shift']} shift.
+
+
+Incident Details:
+
+{event['Description']}
+""",
+
+
+        "hazard": f"""
+Hazard category:
+
+{event['Failure Category']}
+
+
+Root Cause:
+
+{event['Root Cause']}
+""",
+
+
+        "risk": f"""
+Risk Priority:
+
+{event['Priority']}
+
+
+Severity:
+
+{event['Severity']}
+""",
+
+
+        "immediate_action": f"""
+Immediate corrective action:
+
+{event['Corrective Action']}
+""",
+
+
+        "preventive_action": """
+Provide safety awareness training
+and improve preventive monitoring.
+"""
+
+    }
+
+
+
+# ==========================================================
+# MAIN SAFETY TEMPLATE
+# ==========================================================
+
+def safety_template(event):
+
+    templates = [
+
+        safety_template_one,
+
+        safety_template_two
+
+    ]
+
+
+    selected = random.choice(templates)
+
+
+    data = selected(event)
+
+
+    data["recommendation"] = random_recommendation()
+
+
+    data["engineer_remark"] = random_remark()
+
+
+    data["tool"] = random_tool()
+
+
+    data["safety"] = random_safety()
+
+
+    return data
+
+# ==========================================================
+# CALIBRATION TEMPLATE 1
+# ==========================================================
+
+def calibration_template_one(event):
+
+    return {
+
+        "title": "Calibration Certificate Report",
+
+
+        "objective": f"""
+Calibration activity initiated for equipment:
+
+{event['Equipment Name']}
+
+The objective was to verify measurement accuracy
+and ensure instrument performance within acceptable limits.
+""",
+
+
+        "findings": f"""
+Calibration inspection performed.
+
+Instrument:
+
+{event['Equipment Name']}
+
+Observation:
+
+{event['Description']}
+""",
+
+
+        "deviation": """
+No significant calibration deviation observed.
+Instrument readings were compared with standard reference values.
+""",
+
+
+        "adjustment": """
+No adjustment required.
+
+Instrument performance was within acceptable tolerance limits.
+""",
+
+
+        "verification": """
+Calibration verification completed successfully.
+
+Equipment is approved for normal operation.
+"""
+
+    }
+
+
+
+# ==========================================================
+# CALIBRATION TEMPLATE 2
+# ==========================================================
+
+def calibration_template_two(event):
+
+    return {
+
+
+        "title":"Instrument Calibration Report",
+
+
+        "objective": f"""
+Calibration check performed for:
+
+{event['Equipment ID']}
+
+Purpose was to verify instrument accuracy
+and detect measurement deviation.
+""",
+
+
+        "findings": f"""
+Calibration findings:
+
+Equipment:
+
+{event['Equipment Name']}
+
+Observed Condition:
+
+{event['Description']}
+""",
+
+
+        "deviation": f"""
+Calibration deviation identified.
+
+Possible Cause:
+
+{event['Root Cause']}
+""",
+
+
+        "adjustment": f"""
+Adjustment performed.
+
+Corrective Action:
+
+{event['Corrective Action']}
+""",
+
+
+        "verification": """
+Post-adjustment verification completed.
+
+Instrument accuracy restored successfully.
+"""
+
+    }
+
+
+
+# ==========================================================
+# CALIBRATION TEMPLATE 3
+# ==========================================================
+
+def calibration_template_three(event):
+
+    return {
+
+
+        "title":"Instrument Accuracy Verification Report",
+
+
+        "objective": f"""
+Routine calibration verification conducted
+for {event['Equipment Name']}.
+""",
+
+
+        "findings": f"""
+Inspection result:
+
+{event['Description']}
+
+Instrument condition evaluated successfully.
+""",
+
+
+        "deviation": """
+Minor deviation observed during calibration testing.
+""",
+
+
+        "adjustment": """
+Calibration parameters adjusted according to specification.
+""",
+
+
+        "verification": """
+Final calibration test completed successfully.
+Equipment released for operation.
+"""
+
+    }
+
+
+
+# ==========================================================
+# CALIBRATION TEMPLATE 4
+# ==========================================================
+
+def calibration_template_four(event):
+
+    return {
+
+
+        "title":"Calibration Failure Analysis Report",
+
+
+        "objective": """
+Detailed calibration assessment performed
+after abnormal instrument reading.
+""",
+
+
+        "findings": f"""
+Calibration investigation:
+
+Failure Category:
+
+{event['Failure Category']}
+
+Description:
+
+{event['Description']}
+""",
+
+
+        "deviation": f"""
+Deviation analysis:
+
+Root Cause:
+
+{event['Root Cause']}
+""",
+
+
+        "adjustment": f"""
+Corrective calibration action:
+
+{event['Corrective Action']}
+""",
+
+
+        "verification": """
+Instrument tested after calibration activity.
+
+Performance verified successfully.
+"""
+
+    }
+
+
+
+# ==========================================================
+# MAIN CALIBRATION TEMPLATE
+# ==========================================================
+
+def calibration_template(event):
+
+
+    templates=[
+
+        calibration_template_one,
+        calibration_template_two,
+        calibration_template_three,
+        calibration_template_four
+
+    ]
+
+
+    selected=random.choice(templates)
+
+
+    data=selected(event)
+
+
+    data["recommendation"]=random_recommendation()
+
+
+    data["engineer_remark"]=random_remark()
+
+
+    data["tool"]=random_tool()
+
+
+    data["safety"]=random_safety()
+
+
+    return data

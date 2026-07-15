@@ -844,3 +844,305 @@ def add_rca_information(doc, event):
         row.cells[1].text = str(item[1])
 
     doc.add_paragraph()
+
+    # ==========================================================
+# QUALITY INFORMATION
+# ==========================================================
+
+def add_quality_information(doc, event):
+
+    doc.add_heading(
+        "Quality Information",
+        level=1
+    )
+
+    table = doc.add_table(
+        rows=7,
+        cols=2
+    )
+
+    table.style = "Table Grid"
+
+
+    values = [
+
+        ("Quality Report Number",
+         f"QA_{event['Event ID'].replace('EVT','')}"),
+
+        ("Event ID",
+         event["Event ID"]),
+
+        ("Department",
+         event["Department"]),
+
+        ("Equipment",
+         event["Equipment Name"]),
+
+        ("Severity",
+         event["Severity"]),
+
+        ("Priority",
+         event["Priority"]),
+
+        ("Status",
+         event["Status"])
+
+    ]
+
+
+    for row,item in zip(table.rows,values):
+
+        row.cells[0].text = item[0]
+
+        row.cells[1].text = str(item[1])
+
+
+    doc.add_paragraph()
+
+
+
+# ==========================================================
+# QUALITY ASSESSMENT
+# ==========================================================
+
+def add_quality_assessment(doc,event):
+
+    doc.add_heading(
+        "Quality Assessment",
+        level=1
+    )
+
+
+    table = doc.add_table(
+        rows=5,
+        cols=2
+    )
+
+
+    table.style="Table Grid"
+
+
+    values=[
+
+        ("Failure Category",
+         event["Failure Category"]),
+
+
+        ("Root Cause",
+         event["Root Cause"]),
+
+
+        ("Corrective Action",
+         event["Corrective Action"]),
+
+
+        ("Follow-up Required",
+         event["Follow-up Required"]),
+
+
+        ("Asset Criticality",
+         event["Asset Criticality"])
+
+    ]
+
+
+    for row,item in zip(table.rows,values):
+
+        row.cells[0].text=item[0]
+
+        row.cells[1].text=str(item[1])
+
+
+    doc.add_paragraph()
+
+# ==========================================================
+# SAFETY INFORMATION
+# ==========================================================
+
+def add_safety_information(doc, event):
+
+    doc.add_heading(
+        "Safety Information",
+        level=1
+    )
+
+
+    table = doc.add_table(
+        rows=8,
+        cols=2
+    )
+
+
+    table.style = "Table Grid"
+
+
+    values = [
+
+        ("Safety Report Number",
+         f"SAF_{event['Event ID'].replace('EVT','')}"),
+
+
+        ("Event ID",
+         event["Event ID"]),
+
+
+        ("Department",
+         event["Department"]),
+
+
+        ("Area",
+         event["Area"]),
+
+
+        ("Shift",
+         event["Shift"]),
+
+
+        ("Reported By",
+         event["Reported_From"]),
+
+
+        ("Severity",
+         event["Severity"]),
+
+
+        ("Status",
+         event["Status"])
+
+    ]
+
+
+    for row, item in zip(table.rows, values):
+
+        row.cells[0].text = str(item[0])
+
+        row.cells[1].text = str(item[1])
+
+
+    doc.add_paragraph()
+
+# ==========================================================
+# CALIBRATION INFORMATION
+# ==========================================================
+
+def add_calibration_information(doc, event):
+
+    doc.add_heading(
+        "Calibration Information",
+        level=1
+    )
+
+
+    table = doc.add_table(
+        rows=7,
+        cols=2
+    )
+
+    table.style = "Table Grid"
+
+
+    values = [
+
+        (
+            "Calibration Number",
+            f"CAL_{event['Event ID'].replace('EVT','')}"
+        ),
+
+        (
+            "Event ID",
+            event["Event ID"]
+        ),
+
+        (
+            "Equipment ID",
+            event["Equipment ID"]
+        ),
+
+        (
+            "Instrument Name",
+            event["Equipment Name"]
+        ),
+
+        (
+            "Department",
+            event["Department"]
+        ),
+
+        (
+            "Assigned Technician",
+            event["Assigned To"]
+        ),
+
+        (
+            "Status",
+            event["Status"]
+        )
+
+    ]
+
+
+    for row,item in zip(table.rows,values):
+
+        row.cells[0].text = str(item[0])
+
+        row.cells[1].text = str(item[1])
+
+
+    doc.add_paragraph()
+
+
+
+# ==========================================================
+# CALIBRATION RESULT
+# ==========================================================
+
+def add_calibration_result(doc, template):
+
+    doc.add_heading(
+        "Calibration Result",
+        level=1
+    )
+
+
+    add_text(
+        doc,
+        template["result"]
+    )
+
+
+
+# ==========================================================
+# CALIBRATION FINDINGS
+# ==========================================================
+
+def add_calibration_findings(doc, template):
+
+    doc.add_heading(
+        "Calibration Findings",
+        level=1
+    )
+
+
+    add_text(
+        doc,
+        template["finding"]
+    )
+
+
+
+# ==========================================================
+# CALIBRATION EQUIPMENT DETAILS
+# ==========================================================
+
+def add_calibration_equipment(doc, template):
+
+    doc.add_heading(
+        "Calibration Equipment",
+        level=1
+    )
+
+
+    add_text(
+        doc,
+        template["equipment"]
+    )
