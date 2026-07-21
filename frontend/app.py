@@ -278,12 +278,12 @@ with tab_chat:
 
                 if "sources" in message and message["sources"]:
                     # Surface vision diagrams prominently
-                    surfaced_images = []
-                    for src in message["sources"]:
-                        img_path = src.get('metadata', {}).get('image_render_path')
-                        if img_path and img_path not in surfaced_images and os.path.exists(img_path):
-                            surfaced_images.append(img_path)
-                            st.image(img_path, caption=f"📷 Vision Extraction: {src.get('metadata', {}).get('file_name', 'Diagram')}", use_container_width=True)
+                    # surfaced_images = []
+                    # for src in message["sources"]:
+                    #     img_path = src.get('metadata', {}).get('image_render_path')
+                    #     if img_path and img_path not in surfaced_images and os.path.exists(img_path):
+                    #         surfaced_images.append(img_path)
+                    #         st.image(img_path, caption=f"📷 Vision Extraction: {src.get('metadata', {}).get('file_name', 'Diagram')}", use_container_width=True)
 
                     with st.expander("View Sources"):
                         for idx, src in enumerate(message["sources"]):
@@ -344,12 +344,12 @@ with tab_chat:
                             
                             if sources:
                                 # Surface vision diagrams prominently
-                                surfaced_images = []
-                                for src in sources:
-                                    img_path = src.get('metadata', {}).get('image_render_path')
-                                    if img_path and img_path not in surfaced_images and os.path.exists(img_path):
-                                        surfaced_images.append(img_path)
-                                        st.image(img_path, caption=f"📷 Vision Extraction: {src.get('metadata', {}).get('file_name', 'Diagram')}", use_container_width=True)
+                                # surfaced_images = []
+                                # for src in sources:
+                                #     img_path = src.get('metadata', {}).get('image_render_path')
+                                #     if img_path and img_path not in surfaced_images and os.path.exists(img_path):
+                                #         surfaced_images.append(img_path)
+                                #         st.image(img_path, caption=f"📷 Vision Extraction: {src.get('metadata', {}).get('file_name', 'Diagram')}", use_container_width=True)
                                         
                                 with st.expander("View Sources"):
                                     for idx, src in enumerate(sources):
