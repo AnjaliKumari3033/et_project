@@ -52,6 +52,7 @@ flowchart TD
     %% Cross-layer connections
     M -.-> Q
     K -.-> R
+    K -.-> N
     P -.-> S
     I -.-> S
 ```
