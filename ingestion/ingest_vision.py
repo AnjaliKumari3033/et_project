@@ -260,6 +260,7 @@ def _crop_page(page, bbox: tuple[float, float, float, float],
     zoom = target_dpi / 72.0
     x1, y1, x2, y2 = bbox
     rect = fitz.Rect(x1, y1, x2, y2)
+    rect = rect.intersect(page.rect)
     
     # Check for degenerate boxes
     if rect.is_empty or rect.width < 1 or rect.height < 1:

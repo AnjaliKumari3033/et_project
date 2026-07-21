@@ -43,7 +43,7 @@ NIM_MODEL = "meta/llama-3.2-90b-vision-instruct"
 DEFAULT_SPACING_SEC = 1.5        # ~40 RPM free tier -- spacing between consecutive requests
 DEFAULT_MAX_RETRIES = 3
 DEFAULT_BACKOFF_BASE = 2.0       # exponential backoff: 1s, 2s, 4s ...
-DEFAULT_TIMEOUT_SEC = 60
+DEFAULT_TIMEOUT_SEC = 120
 
 TABLE_PROMPT = (
     "Transcribe this table into Markdown, preserving rows and columns exactly. "
