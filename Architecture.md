@@ -4,12 +4,8 @@
 flowchart TD
     subgraph Vector_Pipeline ["Vector Ingestion Pipeline (run_all.py)"]
         A[Raw PDFs, DOCX, P&IDs] --> B(Orchestrator)
-        B --> C{Triage Engine}
-        C -->|Text & Tables| D[PyMuPDF / pdfplumber]
-        C -->|Diagrams| E[NVIDIA NimYOLO]
-        E --> F[NVIDIA llama-3.2-vision]
-        F --> H[MiniLM-L6-v2 Embeddings]
-        D --> H
+        B --> D[PyMuPDF / pdfplumber]
+        D --> H[MiniLM-L6-v2 Embeddings]
         H --> I[(ChromaDB Vector Store)]
         B --> L[SQL Parser]
         L --> M[(SQLite Telemetry DB)]
