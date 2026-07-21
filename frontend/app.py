@@ -288,7 +288,11 @@ with tab_chat:
                     with st.expander("View Sources"):
                         for idx, src in enumerate(message["sources"]):
                             st.markdown(f"**Source {idx+1}:** {src.get('metadata', {}).get('file_name', src.get('metadata', {}).get('source', 'Unknown'))}")
-                            st.text(src.get('content', ''))
+                            content = src.get('content', '')
+                            if content.strip().startswith('{') and content.strip().endswith('}'):
+                                st.code(content, language="json")
+                            else:
+                                st.markdown(f"```text\n{content}\n```")
 
         if prompt:
             st.session_state.messages.append({"role": "user", "content": prompt})
@@ -355,7 +359,11 @@ with tab_chat:
                                     for idx, src in enumerate(sources):
                                         file_meta = src.get('metadata', {}).get('file_name', src.get('metadata', {}).get('source', 'Unknown'))
                                         st.markdown(f"**Source {idx+1}:** {file_meta}")
-                                        st.text(src.get('content', ''))
+                                        content = src.get('content', '')
+                                        if content.strip().startswith('{') and content.strip().endswith('}'):
+                                            st.code(content, language="json")
+                                        else:
+                                            st.markdown(f"```text\n{content}\n```")
                             
                             st.session_state.messages.append({
                                 "role": "assistant", 
