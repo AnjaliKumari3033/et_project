@@ -21,45 +21,40 @@ Asset-intensive industries suffer from a critical "Knowledge Cliff." Crucial dat
 
 ```mermaid
 flowchart TD
-    subgraph Data Ingestion Pipeline
-        A[Raw PDFs, DOCX, P&IDs] --> B(run_all.py Orchestrator)
+    subgraph Vector_Pipeline ["Vector Ingestion Pipeline (run_all.py)"]
+        A[Raw PDFs, DOCX, P&IDs] --> B(Orchestrator)
         B --> C{Triage Engine}
-        C -->|Text/Tables| D[PyMuPDF / pdfplumber]
-        C -->|Diagrams| E[NVIDIA NimYOLO Layout Detector]
-    end
-
-    subgraph NVIDIA Cloud Vision
-        E --> F[Crop & Preprocess]
-        F --> G[llama-3.2-90b-vision-instruct]
-        G -->|Visual Transcriptions| H(Vectorization)
-    end
-
-    subgraph Local Intelligence Layer
-        D --> H[MiniLM-L6-v2 Embeddings]
+        C -->|Text & Tables| D[PyMuPDF / pdfplumber]
+        C -->|Diagrams| E[NVIDIA NimYOLO]
+        E --> F[NVIDIA llama-3.2-vision]
+        F --> H[MiniLM-L6-v2 Embeddings]
+        D --> H
         H --> I[(ChromaDB Vector Store)]
-        
-        B --> J[NetworkX]
-        J --> K[(3D Knowledge Graph)]
-        
         B --> L[SQL Parser]
         L --> M[(SQLite Telemetry DB)]
     end
 
-    subgraph FastAPI Backend
+    subgraph KG_Pipeline ["Knowledge Graph Pipeline"]
+        A2[Raw Documents] --> X[Entity Extractor (Ollama)]
+        X --> J[NetworkX Engine]
+        J --> K[(3D Knowledge Graph)]
+    end
+
+    subgraph FastAPI_Backend ["FastAPI Backend"]
         I -.-> N(Unified Retriever)
+        K -.-> N
         N --> O[Ollama RAG Engine]
         O --> P(qwen2.5:7b-instruct)
     end
 
-    subgraph Streamlit Frontend
-        Q[Web Dashboard]
-        R[3D Spatial View]
+    subgraph Streamlit_Frontend ["Streamlit Frontend"]
+        Q[Plant Analytics Dashboard]
+        R[3D Spatial Graph View]
         S[Streaming Copilot Chat]
     end
 
     M -.-> Q
     K -.-> R
-    K -.-> N
     P -.-> S
     I -.-> S
 ```
@@ -76,7 +71,8 @@ Standard RAG pipelines fail on industrial schematics. Our solution solves this u
 2. **NVIDIA Cloud Transcription**: The cropped images are pushed to NVIDIA NIM's `llama-3.2-90b-vision-instruct` API. This massive model transcribes the visual meaning of the diagrams into highly dense Markdown context.
 
 ### B. Dynamic 3D Knowledge Graph
-- **Entity Linkage**: As documents are ingested, `NetworkX` builds a directed graph linking equipment IDs (e.g., `Pump-101`) to specific events, manuals, and troubleshooting nodes.
+- **LLM Entity Extraction**: Instead of relying purely on regex, a separate independent pipeline feeds raw documents directly to a local Ollama model to intelligently extract complex entities (Equipment, Failure Modes, Standards) and their relationships.
+- **Entity Linkage**: `NetworkX` takes these extracted JSON objects and builds a massive directed graph linking equipment IDs (e.g., `Pump-101`) to specific events, manuals, and troubleshooting nodes.
 - **Interactive Visualization**: Rendered natively via Streamlit Components, field technicians can visually explore failure patterns and trace root causes in 3D space, illuminating the exact relationship between a manual and a failing asset.
 
 ### C. Streaming Expert Knowledge Copilot
