@@ -266,8 +266,12 @@ def _crop_page(page, bbox: tuple[float, float, float, float],
     if rect.is_empty or rect.width < 1 or rect.height < 1:
         return b""
         
-    pix = page.get_pixmap(matrix=fitz.Matrix(zoom, zoom), clip=rect, alpha=False)
-    return pix.tobytes("png")
+    try:
+        pix = page.get_pixmap(matrix=fitz.Matrix(zoom, zoom), clip=rect, alpha=False)
+        return pix.tobytes("png")
+    except Exception as e:
+        print(f"  [PyMuPDF Error] skipping crop due to bounds: {e}")
+        return b""
 
 
 def _vision_chunk_document_type(subfolder: str, region_cls: str) -> str:

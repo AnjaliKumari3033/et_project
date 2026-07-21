@@ -38,7 +38,7 @@ ROOT = Path(__file__).resolve().parent.parent
 PROGRESS_PATH = ROOT / "data" / "vision_progress.json"
 
 NIM_URL = "https://integrate.api.nvidia.com/v1/chat/completions"
-NIM_MODEL = "meta/llama-3.2-90b-vision-instruct"
+NIM_MODEL = "meta/llama-3.2-11b-vision-instruct"
 
 DEFAULT_SPACING_SEC = 1.5        # ~40 RPM free tier -- spacing between consecutive requests
 DEFAULT_MAX_RETRIES = 3
