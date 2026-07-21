@@ -248,6 +248,8 @@ def _detect_regions(page_pixmap_bytes: bytes, model=None) -> list[dict]:
             xyxy = boxes.xyxy[i].tolist()  # [x1,y1,x2,y2]
             cls_idx = int(boxes.cls[i].item())
             conf = float(boxes.conf[i].item())
+            if conf < 0.4:
+                continue
             cls_name = names.get(cls_idx, str(cls_idx))
             regions.append({"bbox": tuple(xyxy), "cls": cls_name.lower(), "conf": conf})
         except Exception as e:
@@ -259,7 +261,8 @@ def _crop_page(page, bbox: tuple[float, float, float, float],
                target_dpi: int = 150) -> bytes:
     zoom = target_dpi / 72.0
     x1, y1, x2, y2 = bbox
-    rect = fitz.Rect(x1, y1, x2, y2)
+    pad = 20.0  # add 20px padding to avoid cutting off diagram edges
+    rect = fitz.Rect(max(0, x1 - pad), max(0, y1 - pad), x2 + pad, y2 + pad)
     rect = rect.intersect(page.rect)
     
     # Check for degenerate boxes
