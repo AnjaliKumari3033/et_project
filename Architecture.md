@@ -16,7 +16,7 @@ flowchart TD
     end
 
     subgraph KG_Pipeline ["Knowledge Graph Pipeline"]
-        A2[Raw Documents] --> X[Entity Extractor (Ollama)]
+        A2[Raw Documents] --> X["Entity Extractor (Ollama)"]
         X --> J[NetworkX Engine]
         J --> K[(3D Knowledge Graph)]
     end
@@ -25,7 +25,7 @@ flowchart TD
         I -.-> N(Unified Retriever)
         K -.-> N
         N --> O[Ollama RAG Engine]
-        O --> P(qwen2.5:7b-instruct)
+        O --> P("qwen2.5:7b-instruct")
     end
 
     subgraph Streamlit_Frontend ["Streamlit Frontend"]
