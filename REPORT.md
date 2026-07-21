@@ -3,37 +3,91 @@
 **Hackathon**: ET AI HACKATHON 2026  
 **Problem Statement**: 8. AI for Industrial Knowledge Intelligence: Unified Asset & Operations Brain  
 
+---
+
 ## 1. Executive Summary
-Asset-intensive industries suffer from a critical "Knowledge Cliff." Crucial data—spanning unstructured P&IDs, historical work orders, and safety logs—is fragmented across disconnected systems, resulting in significant operational downtime. "NovaChem Industrial Knowledge Intelligence" is a robust, multi-modal AI platform designed to bridge this gap. By fusing disparate data formats into a singular, intelligently connected knowledge base, this solution equips on-site engineers with a unified, real-time brain for their physical assets.
+Asset-intensive industries suffer from a critical "Knowledge Cliff." Crucial data—spanning unstructured P&IDs, historical work orders, and safety logs—is fragmented across disconnected systems, resulting in significant operational downtime. **NovaChem Industrial Knowledge Intelligence** is a robust, multi-modal AI platform designed to bridge this gap. By fusing disparate data formats into a singular, intelligently connected knowledge base, this solution equips on-site engineers with a unified, real-time brain for their physical assets, drastically reducing unplanned downtime and eliminating the manual hunt for documentation.
 
-## 2. Business Impact & Value Proposition
-- **Downtime Reduction**: By connecting the dots between equipment maintenance history and real-time conditions, our system facilitates proactive decision-making, drastically reducing the 18-22% unplanned downtime common in heavy industries.
-- **Knowledge Retention**: Captures undocumented operational knowledge from retiring experts by intelligently cross-referencing and surfacing historical fixes.
-- **Operational Efficiency**: Eliminates the 35% time loss professionals spend searching for manuals or recreating documents by providing an instantaneous RAG-powered Copilot.
+---
 
-## 3. Architecture & Technical Excellence
-Our solution operates on a highly scalable, decoupled architecture:
+## 2. Business Impact (25% Weight)
+- **Elimination of "Time Loss"**: Professionals spend ~35% of their time searching for information. Our streaming RAG Copilot returns hyper-accurate operational context in seconds, freeing up thousands of man-hours annually.
+- **Predictive Maintenance & Uptime**: By correlating historical equipment failures (stored in SQLite) with real-time operational manuals, our system acts as an early warning layer, directly combating the 18-22% unplanned downtime common in heavy industry.
+- **Solving the Knowledge Cliff**: As 25% of the experienced workforce retires, this platform mathematically encodes their decades of undocumented troubleshooting knowledge into an immutable, searchable 3D graph.
 
-### A. Universal Document Ingestion & Vision Pipeline
-Unlike standard text-based RAG pipelines, our ingestion engine handles complex visual data.
-- **Vision Extraction**: Utilizes an NVIDIA NIM-powered vision pipeline (`nemotron-page-elements-v3`) to intelligently identify and crop schematics, P&IDs, and tables from bulk PDFs.
-- **Visual Transcription**: Transcribes complex visual layouts using the `meta/llama-3.2-90b-vision-instruct` model, turning static diagrams into searchable text context.
-- **Vector Storage**: All documents, including vision transcriptions and adjacent contextual text, are embedded using `all-MiniLM-L6-v2` and stored in a persistent ChromaDB instance.
+---
 
-### B. Knowledge Graph & Semantic Routing
-- **Entity Linkage**: As documents are ingested, the system builds a 3D Knowledge Graph (via `NetworkX`) linking equipment (e.g., Motors, Compressors) to specific events, manuals, and troubleshooting guides.
-- **Interactive Visualization**: Field technicians can visually explore failure patterns by interacting with the graph directly within the Streamlit UI.
+## 3. System Architecture Diagram
 
-### C. Expert Knowledge Copilot (RAG)
-- **Streaming Responses**: The backend (FastAPI) utilizes server-sent events to stream responses token-by-token from a local Ollama model (`qwen2.5:7b-instruct`), providing instant, real-time feedback.
-- **Source Surfacing**: When the AI uses an extracted diagram or flowchart to answer a question, the actual image crop is surfaced directly in the chat UI, providing immediate visual verification to the engineer.
+```mermaid
+flowchart TD
+    subgraph Data Ingestion Pipeline
+        A[Raw PDFs, DOCX, P&IDs] --> B(run_all.py Orchestrator)
+        B --> C{Triage Engine}
+        C -->|Text/Tables| D[PyMuPDF / pdfplumber]
+        C -->|Diagrams| E[NVIDIA NimYOLO Layout Detector]
+    end
 
-### D. Plant Analytics Dashboard
-- A built-in SQLite-powered dashboard that aggregates high-level telemetry, displaying historical downtime, event frequencies, and equipment status.
+    subgraph NVIDIA Cloud Vision
+        E --> F[Crop & Preprocess]
+        F --> G[llama-3.2-90b-vision-instruct]
+        G -->|Visual Transcriptions| H(Vectorization)
+    end
 
-## 4. Scalability & Security
-- **Local-First Execution**: The core LLM and vector database run locally, ensuring that sensitive, proprietary industrial data (like unreleased plant schematics) never leaves the corporate firewall. 
-- **Cloud-Accelerated Ingestion**: Heavy lifting (like Vision object detection) can be seamlessly offloaded to highly scalable cloud APIs (NVIDIA NIM) during the one-time ingestion phase.
+    subgraph Local Intelligence Layer
+        D --> H[MiniLM-L6-v2 Embeddings]
+        H --> I[(ChromaDB Vector Store)]
+        
+        B --> J[NetworkX]
+        J --> K[(3D Knowledge Graph)]
+        
+        B --> L[SQL Parser]
+        L --> M[(SQLite Telemetry DB)]
+    end
 
-## 5. Conclusion
-This Unified Asset & Operations Brain transforms reactive maintenance into predictive intelligence. It is a complete, working prototype that successfully demonstrates how multimodal AI and Knowledge Graphs can revolutionize industrial safety and efficiency for zero-harm operations.
+    subgraph FastAPI Backend
+        I -.-> N(Unified Retriever)
+        N --> O[Ollama RAG Engine]
+        O --> P(qwen2.5:7b-instruct)
+    end
+
+    subgraph Streamlit Frontend
+        Q[Web Dashboard]
+        R[3D Spatial View]
+        S[Streaming Copilot Chat]
+    end
+
+    M -.-> Q
+    K -.-> R
+    P -.-> S
+    I -.-> S
+```
+
+---
+
+## 4. Technical Excellence (20% Weight)
+
+The platform operates on a highly decoupled, asynchronous 7-stage pipeline:
+
+### A. Universal Document Ingestion & Vision AI
+Standard RAG pipelines fail on industrial schematics. Our solution solves this using a two-tier vision pipeline:
+1. **Local Object Detection**: Uses an AI layout detector (`NimYOLO`) to scan thousands of PDF pages, ignoring generic text and dynamically cropping only the complex P&IDs, flowcharts, and technical tables.
+2. **NVIDIA Cloud Transcription**: The cropped images are pushed to NVIDIA NIM's `llama-3.2-90b-vision-instruct` API. This massive model transcribes the visual meaning of the diagrams into highly dense Markdown context.
+
+### B. Dynamic 3D Knowledge Graph
+- **Entity Linkage**: As documents are ingested, `NetworkX` builds a directed graph linking equipment IDs (e.g., `Pump-101`) to specific events, manuals, and troubleshooting nodes.
+- **Interactive Visualization**: Rendered natively via Streamlit Components, field technicians can visually explore failure patterns and trace root causes in 3D space, illuminating the exact relationship between a manual and a failing asset.
+
+### C. Streaming Expert Knowledge Copilot
+- **Server-Sent Events (SSE)**: The FastAPI backend streams tokens dynamically to the UI.
+- **Local-First Execution**: The language reasoning is powered entirely locally by Ollama (`qwen2.5:7b-instruct`), ensuring that sensitive, proprietary industrial data (like unreleased plant schematics) never leaves the corporate firewall. 
+- **Visual Source Verification**: When the LLM answers a question based on an extracted diagram, the actual image crop is surfaced directly in the chat UI—providing immediate visual proof to the engineer without forcing them to open the original PDF.
+
+---
+
+## 5. Scalability & User Experience (30% Weight)
+- **Idempotent Background Processing**: The entire ingestion pipeline is governed by `run_all.py`, an orchestrator that manages checkpointing and state. If the NVIDIA API rate-limits, or a node crashes, the system gracefully caches progress and resumes instantly on reboot.
+- **Plant Analytics Dashboard**: A built-in SQLite-powered dashboard synthesizes high-level telemetry, displaying historical downtime, event frequencies, and real-time equipment status in an intuitive, operator-friendly view.
+
+## 6. Conclusion
+The **NovaChem Industrial Knowledge Intelligence** platform transforms reactive industrial maintenance into predictive, AI-driven operations. It is a complete, working prototype that successfully demonstrates how multimodal AI and Knowledge Graphs can fundamentally solve the knowledge fragmentation crisis in heavy industries.
