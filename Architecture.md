@@ -38,4 +38,10 @@ flowchart TD
     K -.-> R
     P -.-> S
     I -.-> S
+
+    %% Subgraph Styling to remove grey patches
+    style Vector_Pipeline fill:transparent,stroke:#999,stroke-width:2px,stroke-dasharray: 5 5
+    style KG_Pipeline fill:transparent,stroke:#999,stroke-width:2px,stroke-dasharray: 5 5
+    style FastAPI_Backend fill:transparent,stroke:#999,stroke-width:2px,stroke-dasharray: 5 5
+    style Streamlit_Frontend fill:transparent,stroke:#999,stroke-width:2px,stroke-dasharray: 5 5
 ```
