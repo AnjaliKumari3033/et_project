@@ -198,55 +198,7 @@ API_URL_STREAM = "http://localhost:8000/api/chat_stream"
 
 st.set_page_config(page_title="NovaChem Intelligence", page_icon="🏭", layout="wide")
 
-st.markdown("""
-<style>
-/* Stunning gradient background for main app */
-[data-testid="stAppViewContainer"] {
-    background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%) !important;
-}
-
-/* Glassmorphism sidebar */
-[data-testid="stSidebar"] {
-    background: rgba(15, 23, 42, 0.4) !important;
-    backdrop-filter: blur(16px) !important;
-    -webkit-backdrop-filter: blur(16px) !important;
-    border-right: 1px solid rgba(255, 255, 255, 0.1) !important;
-}
-
-/* Glassmorphism header */
-[data-testid="stHeader"] {
-    background: rgba(15, 23, 42, 0.2) !important;
-    backdrop-filter: blur(10px) !important;
-}
-
-/* Glassmorphism input boxes and chat containers */
-.stTextInput>div>div>input, .stSelectbox>div>div>div {
-    background-color: rgba(255, 255, 255, 0.05) !important;
-    backdrop-filter: blur(5px);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    border-radius: 8px;
-}
-
-div[data-testid="stChatMessage"] {
-    background-color: rgba(255, 255, 255, 0.05) !important;
-    backdrop-filter: blur(12px) !important;
-    border: 1px solid rgba(255, 255, 255, 0.1) !important;
-    border-radius: 12px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-
-/* Dialog Glassmorphism */
-div[role="dialog"] {
-    background: rgba(15, 23, 42, 0.6) !important;
-    backdrop-filter: blur(20px) !important;
-    border: 1px solid rgba(255, 255, 255, 0.1) !important;
-    border-radius: 16px !important;
-}
-</style>
-""", unsafe_allow_html=True)
-
-@st.dialog("Full Knowledge Graph", width="large")
-def show_full_graph_dialog():
+def render_full_graph():
     st.info("🖱️ **Click & Drag** to rotate 3D space • ⚙️ **Scroll** to zoom in/out • 👆 **Hover** over nodes to reveal names")
     
     col1, col2, col3 = st.columns([1.5, 1.5, 2])
@@ -337,97 +289,38 @@ with st.sidebar:
         show_help_dialog()
     
     st.divider()
-    st.markdown("### ⚡ Quick Prompts")
-    if st.button("Troubleshoot P-101 Bearing"):
-        st.session_state.quick_prompt = "What are the troubleshooting steps for a P-101 bearing failure?"
-    if st.button("OISD Compliance Gaps"):
-        st.session_state.quick_prompt = "What are the OISD compliance gaps?"
-    if st.button("Specs for Air Motor"):
-        st.session_state.quick_prompt = "What are the specifications for the Air Motor?"
-
-    if user_role in ["Plant Administrator", "Maintenance Engineer"]:
-        st.divider()
-        st.markdown("### 🌐 Knowledge Graph")
-        if st.button("Explore Full Graph 🔍"):
-            show_full_graph_dialog()
-    
-        st.divider()
-        st.markdown("### 🔍 Equipment Deep Dive")
-        
-        # Fetch equipment list from backend
-        try:
-            eq_url = API_URL.replace("/api/chat", "/api/equipment")
-            eq_resp = requests.get(eq_url, timeout=5)
-            if eq_resp.status_code == 200:
-                eq_list = eq_resp.json().get("equipment_ids", [])
-                selected_eq = st.selectbox("Select Equipment ID:", ["-- Select --"] + eq_list)
-                
-                if selected_eq != "-- Select --":
-                    detail_url = f"{eq_url}/{selected_eq}"
-                    detail_resp = requests.get(detail_url, timeout=5)
-                    if detail_resp.status_code == 200:
-                        details = detail_resp.json()
-                        specs = details.get("specs", {})
-                        events = details.get("recent_events", [])
-                        
-                        with st.container(border=True):
-                            st.markdown(f"**Name:** {specs.get('equipment_name', 'N/A')}")
-                            st.markdown(f"**Manufacturer:** {specs.get('manufacturer', 'N/A')}")
-                            st.markdown(f"**Installed:** {specs.get('install_year', 'N/A')}")
-                            
-                            status = specs.get('status', 'N/A')
-                            color = "green" if status == "Active" else "red"
-                            st.markdown(f"**Status:** :{color}[{status}]")
-                            
-                            if events:
-                                st.markdown("**Recent Events:**")
-                                for ev in events:
-                                    st.caption(f"• {ev.get('date')} - {ev.get('event_type')}")
-                                    if ev.get('downtime_hrs'):
-                                        st.caption(f"  Downtime: {ev.get('downtime_hrs')} hrs")
-                    else:
-                        st.error("Failed to load details.")
-        except Exception:
-            st.warning("Backend not running or unreachable.")
-
-    st.divider()
-    st.markdown("### 🖥️ System Diagnostics")
-    num_nodes = len(graph_obj.nodes()) if graph_obj else 0
-    st.markdown(f"🟢 **Knowledge Graph:** Online ({num_nodes} Nodes)")
-    try:
-        health_url = API_URL.replace("/api/chat", "/health")
-        health_resp = requests.get(health_url, timeout=2)
-        if health_resp.status_code == 200:
-            st.markdown("🟢 **Vector Store:** Connected")
-            st.markdown("🟢 **Local LLM:** Ready")
+    with st.expander("📥 Export Case File"):
+        report_data = generate_report()
+        file_name_input = st.text_input("Report Name:", value="novachem_case_file")
+        export_format = st.radio("Format:", ["Markdown (.md)", "Text (.txt)"], horizontal=True)
+        if export_format == "Markdown (.md)":
+            ext = ".md"
+            mime_type = "text/markdown"
         else:
-            st.markdown("🔴 **Backend API:** Error")
-    except:
-        st.markdown("🔴 **Backend API:** Unreachable")
+            ext = ".txt"
+            mime_type = "text/plain"
+        st.download_button(
+            label=f"Download {ext.upper()}",
+            data=report_data,
+            file_name=f"{file_name_input.strip()}{ext}",
+            mime=mime_type,
+            use_container_width=True
+        )
 
     st.divider()
-    st.markdown("### 📥 Export Report")
-    report_data = generate_report()
-    
-    file_name_input = st.text_input("Report Name:", value="novachem_case_file")
-    export_format = st.radio("Format:", ["Markdown (.md)", "Text (.txt)"], horizontal=True)
-    
-    if export_format == "Markdown (.md)":
-        ext = ".md"
-        mime_type = "text/markdown"
-    else:
-        ext = ".txt"
-        mime_type = "text/plain"
-        
-    final_file_name = f"{file_name_input.strip()}{ext}"
-    
-    st.download_button(
-        label=f"Download {ext.upper()} File",
-        data=report_data,
-        file_name=final_file_name,
-        mime=mime_type,
-        help="Export the current chat history."
-    )
+    with st.expander("🖥️ System Diagnostics"):
+        num_nodes = len(graph_obj.nodes()) if graph_obj else 0
+        st.markdown(f"🟢 **Knowledge Graph:** Online ({num_nodes} Nodes)")
+        try:
+            health_url = API_URL.replace("/api/chat", "/health")
+            health_resp = requests.get(health_url, timeout=2)
+            if health_resp.status_code == 200:
+                st.markdown("🟢 **Vector Store:** Connected")
+                st.markdown("🟢 **Local LLM:** Ready")
+            else:
+                st.markdown("🔴 **Backend API:** Error")
+        except:
+            st.markdown("🔴 **Backend API:** Unreachable")
 
 # --- MAIN UI ---
 st.title("🏭 NovaChem Industrial Knowledge Intelligence")
@@ -436,9 +329,18 @@ st.markdown("Ask questions about equipment, failures, maintenance, and manuals. 
 if "messages" not in st.session_state:
     st.session_state.messages = []
 
-tab_chat, tab_dashboard = st.tabs(["💬 AI Chat", "📊 Plant Analytics Dashboard"])
+tab_chat, tab_graph, tab_dashboard, tab_deep_dive = st.tabs(["💬 AI Copilot", "🌐 3D Knowledge Graph", "📊 Plant Analytics", "🔍 Equipment Deep Dive"])
 
 with tab_chat:
+    st.markdown("### ⚡ Quick Prompts")
+    col1, col2, col3 = st.columns(3)
+    if col1.button("Troubleshoot P-101", use_container_width=True):
+        st.session_state.quick_prompt = "What are the troubleshooting steps for a P-101 bearing failure?"
+    if col2.button("OISD Compliance Gaps", use_container_width=True):
+        st.session_state.quick_prompt = "What are the OISD compliance gaps?"
+    if col3.button("Specs for Air Motor", use_container_width=True):
+        st.session_state.quick_prompt = "What are the specifications for the Air Motor?"
+    st.divider()
     chat_container = st.container()
     
     # Determine prompt at the bottom of the tab layout
@@ -608,3 +510,51 @@ with tab_dashboard:
                 st.error("Failed to load analytics data.")
         except Exception as e:
             st.warning(f"Could not connect to backend to fetch analytics: {e}")
+
+with tab_graph:
+    st.header("🌐 3D Knowledge Graph")
+    if user_role not in ["Plant Administrator", "Maintenance Engineer"]:
+        st.error("🛑 **Access Denied:** You must be logged in as a Plant Administrator or Maintenance Engineer to explore the Knowledge Graph.")
+    else:
+        render_full_graph()
+
+with tab_deep_dive:
+    st.header("🔍 Equipment Deep Dive")
+    if user_role not in ["Plant Administrator", "Maintenance Engineer"]:
+        st.error("🛑 **Access Denied:** You must be logged in as a Plant Administrator or Maintenance Engineer to view Equipment Details.")
+    else:
+        # Fetch equipment list from backend
+        try:
+            eq_url = API_URL.replace("/api/chat", "/api/equipment")
+            eq_resp = requests.get(eq_url, timeout=5)
+            if eq_resp.status_code == 200:
+                eq_list = eq_resp.json().get("equipment_ids", [])
+                selected_eq = st.selectbox("Select Equipment ID:", ["-- Select --"] + eq_list)
+                
+                if selected_eq != "-- Select --":
+                    detail_url = f"{eq_url}/{selected_eq}"
+                    detail_resp = requests.get(detail_url, timeout=5)
+                    if detail_resp.status_code == 200:
+                        details = detail_resp.json()
+                        specs = details.get("specs", {})
+                        events = details.get("recent_events", [])
+                        
+                        with st.container(border=True):
+                            st.markdown(f"**Name:** {specs.get('equipment_name', 'N/A')}")
+                            st.markdown(f"**Manufacturer:** {specs.get('manufacturer', 'N/A')}")
+                            st.markdown(f"**Installed:** {specs.get('install_year', 'N/A')}")
+                            
+                            status = specs.get('status', 'N/A')
+                            color = "green" if status == "Active" else "red"
+                            st.markdown(f"**Status:** :{color}[{status}]")
+                            
+                            if events:
+                                st.markdown("**Recent Events:**")
+                                for ev in events:
+                                    st.caption(f"• {ev.get('date')} - {ev.get('event_type')}")
+                                    if ev.get('downtime_hrs'):
+                                        st.caption(f"  Downtime: {ev.get('downtime_hrs')} hrs")
+                    else:
+                        st.error("Failed to load details.")
+        except Exception:
+            st.warning("Backend not running or unreachable.")
