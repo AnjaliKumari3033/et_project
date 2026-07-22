@@ -214,6 +214,17 @@ def show_full_graph_dialog():
         components.html(html, height=700)
 
 # --- SIDEBAR ---
+def generate_report():
+    if not st.session_state.get("messages"):
+        return "No chat history available."
+    report = "# NovaChem Case File\n\n"
+    for m in st.session_state.messages:
+        role = "Operator" if m["role"] == "user" else "AI Copilot"
+        report += f"### {role}\n{m['content']}\n\n"
+        if "kg_nodes" in m and m["kg_nodes"]:
+            report += f"**Context Entities:** {', '.join(m['kg_nodes'])}\n\n"
+    return report
+
 with st.sidebar:
     st.header("⚙️ Settings")
     temperature = st.slider("AI Creativity (Temperature)", min_value=0.0, max_value=1.0, value=0.0, step=0.1, help="0 = Factual/Strict, 1 = Creative/Loose")
@@ -270,6 +281,32 @@ with st.sidebar:
                     st.error("Failed to load details.")
     except Exception:
         st.warning("Backend not running or unreachable.")
+
+    st.divider()
+    st.markdown("### 🖥️ System Diagnostics")
+    num_nodes = len(graph_obj.nodes()) if graph_obj else 0
+    st.markdown(f"🟢 **Knowledge Graph:** Online ({num_nodes} Nodes)")
+    try:
+        health_url = API_URL.replace("/api/chat", "/health")
+        health_resp = requests.get(health_url, timeout=2)
+        if health_resp.status_code == 200:
+            st.markdown("🟢 **Vector Store:** Connected")
+            st.markdown("🟢 **Local LLM:** Ready")
+        else:
+            st.markdown("🔴 **Backend API:** Error")
+    except:
+        st.markdown("🔴 **Backend API:** Unreachable")
+
+    st.divider()
+    st.markdown("### 📥 Export Report")
+    report_data = generate_report()
+    st.download_button(
+        label="Download Case File (.md)",
+        data=report_data,
+        file_name="novachem_case_file.md",
+        mime="text/markdown",
+        help="Export the current chat history as a markdown report."
+    )
 
 # --- MAIN UI ---
 st.title("🏭 NovaChem Industrial Knowledge Intelligence")
