@@ -198,6 +198,53 @@ API_URL_STREAM = "http://localhost:8000/api/chat_stream"
 
 st.set_page_config(page_title="NovaChem Intelligence", page_icon="🏭", layout="wide")
 
+st.markdown("""
+<style>
+/* Stunning gradient background for main app */
+[data-testid="stAppViewContainer"] {
+    background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%) !important;
+}
+
+/* Glassmorphism sidebar */
+[data-testid="stSidebar"] {
+    background: rgba(15, 23, 42, 0.4) !important;
+    backdrop-filter: blur(16px) !important;
+    -webkit-backdrop-filter: blur(16px) !important;
+    border-right: 1px solid rgba(255, 255, 255, 0.1) !important;
+}
+
+/* Glassmorphism header */
+[data-testid="stHeader"] {
+    background: rgba(15, 23, 42, 0.2) !important;
+    backdrop-filter: blur(10px) !important;
+}
+
+/* Glassmorphism input boxes and chat containers */
+.stTextInput>div>div>input, .stSelectbox>div>div>div {
+    background-color: rgba(255, 255, 255, 0.05) !important;
+    backdrop-filter: blur(5px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 8px;
+}
+
+div[data-testid="stChatMessage"] {
+    background-color: rgba(255, 255, 255, 0.05) !important;
+    backdrop-filter: blur(12px) !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Dialog Glassmorphism */
+div[role="dialog"] {
+    background: rgba(15, 23, 42, 0.6) !important;
+    backdrop-filter: blur(20px) !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    border-radius: 16px !important;
+}
+</style>
+""", unsafe_allow_html=True)
+
 @st.dialog("Full Knowledge Graph", width="large")
 def show_full_graph_dialog():
     st.info("🖱️ **Click & Drag** to rotate 3D space • ⚙️ **Scroll** to zoom in/out • 👆 **Hover** over nodes to reveal names")
