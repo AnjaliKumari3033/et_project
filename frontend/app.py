@@ -211,7 +211,7 @@ def show_full_graph_dialog():
     
     with st.spinner("Initializing WebGL Engine..."):
         html = get_full_graph_html(enable_hover=enable_hover, hide_docs=hide_docs, target_node=target_node)
-        components.html(html, height=700)
+        st.iframe(html, height=700)
 
 # --- SIDEBAR ---
 def generate_report():
@@ -339,7 +339,7 @@ with tab_chat:
                     st.info(f"🔗 **Related Equipment Context:** {', '.join(message['kg_nodes'])}")
                     if "graph_html" in message and message["graph_html"]:
                         st.markdown("**Local Graph Context:**")
-                        components.html(message["graph_html"], height=470)
+                        st.iframe(message["graph_html"], height=470)
 
                 if "sources" in message and message["sources"]:
                     # Surface vision diagrams prominently
@@ -409,7 +409,7 @@ with tab_chat:
                                 if graph_obj:
                                     st.markdown("**Local Graph Context:**")
                                     sub_html = generate_graph_html(graph_obj, nodes_of_interest=kg_nodes, radius=1)
-                                    components.html(sub_html, height=470)
+                                    st.iframe(sub_html, height=470)
                             
                             if sources:
                                 # Surface vision diagrams prominently
