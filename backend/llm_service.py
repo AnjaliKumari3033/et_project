@@ -36,6 +36,7 @@ def generate_answer(query: str, context: str, temperature: float = 0.0) -> str:
     try:
         response = requests.post(f"{OLLAMA_HOST}/api/chat", json=payload, timeout=60)
         response.raise_for_status()
+        result = response.json()
         return result["message"]["content"]
     except Exception as e:
         return f"Error communicating with local LLM ({OLLAMA_MODEL}): {e}"

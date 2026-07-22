@@ -2,42 +2,38 @@
 
 ```mermaid
 flowchart TD
-    subgraph Vector_Pipeline ["Vector Ingestion Pipeline (run_all.py)"]
-        A[Raw PDFs, DOCX, P&IDs] --> B(Orchestrator)
-        B --> D[PyMuPDF / pdfplumber]
-        D --> H[MiniLM-L6-v2 Embeddings]
-        H --> I[(ChromaDB Vector Store)]
-        B --> L[SQL Parser]
-        L --> M[(SQLite Telemetry DB)]
-    end
-
-    subgraph KG_Pipeline ["Knowledge Graph Pipeline"]
-        A2[Raw Documents] --> X["Entity Extractor (Ollama)"]
-        X --> J[NetworkX Engine]
+    subgraph Ingestion ["Data Ingestion Pipeline"]
+        A[Raw PDFs, DOCX, Excel] --> B(Orchestrator - run_all.py)
+        B --> C[PyMuPDF / pdfplumber]
+        B --> D[python-docx Parser]
+        B --> E[SQL Parser]
+        C --> F[MiniLM-L6-v2 Embeddings]
+        D --> F
+        F --> G[(ChromaDB Vector Store)]
+        E --> H[(SQLite Telemetry DB)]
+        B --> I[Entity Extractor]
+        I --> J[NetworkX Engine]
         J --> K[(3D Knowledge Graph)]
     end
 
-    subgraph FastAPI_Backend ["FastAPI Backend"]
-        I -.-> N(Unified Retriever)
-        K -.-> N
-        N --> O[Ollama RAG Engine]
-        O --> P("qwen2.5:7b-instruct")
+    subgraph Backend ["FastAPI Backend"]
+        G -.-> L(Hybrid RAG Retriever)
+        K -.-> L
+        L --> M[Ollama LLM Engine]
+        M --> N("qwen2.5:7b-instruct")
+        H -.-> O[Analytics API]
     end
 
-    subgraph Streamlit_Frontend ["Streamlit Frontend"]
-        Q[Plant Analytics Dashboard]
-        R[3D Spatial Graph View]
-        S[Streaming Copilot Chat]
+    subgraph Frontend ["Streamlit Frontend (4-Tab Layout)"]
+        P["💬 AI Copilot"]
+        Q["🌐 3D Knowledge Graph"]
+        R["📊 Plant Analytics - Plotly"]
+        S["🔍 Equipment Deep Dive"]
+        T["👤 RBAC Access Control"]
     end
 
-    M -.-> Q
-    K -.-> R
-    P -.-> S
-    I -.-> S
-
-    %% Subgraph Styling to remove grey patches
-    style Vector_Pipeline fill:transparent,stroke:#999,stroke-width:2px,stroke-dasharray: 5 5
-    style KG_Pipeline fill:transparent,stroke:#999,stroke-width:2px,stroke-dasharray: 5 5
-    style FastAPI_Backend fill:transparent,stroke:#999,stroke-width:2px,stroke-dasharray: 5 5
-    style Streamlit_Frontend fill:transparent,stroke:#999,stroke-width:2px,stroke-dasharray: 5 5
+    N -.-> P
+    K -.-> Q
+    O -.-> R
+    H -.-> S
 ```
