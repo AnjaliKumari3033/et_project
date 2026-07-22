@@ -216,7 +216,7 @@ def render_full_graph():
 @st.dialog("ℹ️ User Guide & Documentation", width="large")
 def show_help_dialog():
     st.markdown("### 1. AI Copilot")
-    st.markdown("Ask technical questions about equipment, failures, or OISD compliance. The AI strictly cites factual sources and will not hallucinate.")
+    st.markdown("Ask technical questions about equipment, failures, or OISD compliance. The AI is strictly grounded in the ingested documents and cites its sources.")
     with st.expander("Read more about the AI Copilot"):
         st.markdown("""
         **How it works:**
@@ -224,7 +224,7 @@ def show_help_dialog():
         It then passes the exact context to a local Large Language Model (Qwen-2.5 7B) running on Ollama, ensuring zero data leakage to the cloud. 
         
         **Capabilities:**
-        - **Zero Hallucination Guarantee:** If the answer is not in the manuals, the AI will safely refuse to guess.
+        - **Strictly Grounded Responses:** The AI is prompt-engineered to refuse answering when the context is insufficient, rather than guessing.
         - **Source Citations:** Every claim is backed by a specific document or Knowledge Graph node, which you can audit in the "View Sources" dropdown.
         """)
 

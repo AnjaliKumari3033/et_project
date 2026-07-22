@@ -75,7 +75,7 @@ Standard RAG pipelines fail on industrial schematics. Our solution uses `PyMuPDF
 ### C. Streaming Expert Knowledge Copilot
 - **Server-Sent Events (SSE)**: The FastAPI backend streams tokens dynamically to the UI via NDJSON, providing instant response feedback.
 - **Local-First Execution**: The language reasoning is powered entirely locally by Ollama (`qwen2.5:7b-instruct`), ensuring that sensitive, proprietary industrial data (like unreleased plant schematics) never leaves the corporate firewall.
-- **Zero-Hallucination Guarantee**: The system prompt enforces strict factual grounding — if the answer isn't in the ingested documents, the AI refuses to guess.
+- **Strictly Grounded Responses**: The system prompt enforces strict factual grounding — if the answer isn't in the ingested documents, the AI is instructed to refuse rather than guess. Every response includes auditable source citations.
 - **Visual Source Verification**: Every AI response is backed by auditable source citations, displayed in expandable dropdowns within the chat UI.
 
 ### D. Role-Based Access Control (RBAC)

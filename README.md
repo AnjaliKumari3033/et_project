@@ -14,7 +14,7 @@ By ingesting disconnected silos of information — P&IDs, maintenance logs, oper
 
 ### 💬 AI Copilot (Streaming RAG Chat)
 - Real-time, streaming AI chat powered by a **local LLM** (Ollama `qwen2.5:7b-instruct`) and **RAG** (ChromaDB + Knowledge Graph).
-- **Zero-Hallucination Guarantee**: The AI strictly refuses to guess if the answer isn't in the ingested documents. Every claim is backed by cited sources.
+- **Strictly Grounded Responses**: The AI is prompt-engineered to refuse answering when the context is insufficient. Every claim is backed by cited sources from the ingested documents.
 - Quick Prompt buttons for common queries like equipment troubleshooting and OISD compliance checks.
 
 ### 🌐 3D Knowledge Graph
