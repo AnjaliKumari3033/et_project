@@ -15,7 +15,7 @@ def load_graph():
             return pickle.load(f)
     return None
 
-def generate_graph_html(G, nodes_of_interest=None, radius=1, enable_hover=True):
+def generate_graph_html(G, nodes_of_interest=None, radius=1, enable_hover=True, hide_docs=False, target_node=""):
     if G is None:
         return ""
     
@@ -44,6 +44,9 @@ def generate_graph_html(G, nodes_of_interest=None, radius=1, enable_hover=True):
     nodes = []
     for n, d in subgraph.nodes(data=True):
         kind = d.get("kind", "Unknown")
+        if hide_docs and kind == "Document":
+            continue
+            
         color = "#97c2fc"
         if kind == "Equipment": color = "#ff9999"
         elif kind == "Event": color = "#99ff99"
@@ -62,16 +65,19 @@ def generate_graph_html(G, nodes_of_interest=None, radius=1, enable_hover=True):
         })
         
     links = []
+    node_ids = {str(n['id']) for n in nodes}
     for u, v, d in subgraph.edges(data=True):
-        links.append({
-            "source": str(u),
-            "target": str(v),
-            "name": d.get("relationship", "")
-        })
+        if str(u) in node_ids and str(v) in node_ids:
+            links.append({
+                "source": str(u),
+                "target": str(v),
+                "name": d.get("relationship", "")
+            })
         
     graph_data = {"nodes": nodes, "links": links}
     
     enable_hover_str = "true" if enable_hover else "false"
+    target_node_str = f"\"{target_node}\"" if target_node else "null"
     
     html_template = """
     <html>
@@ -83,6 +89,7 @@ def generate_graph_html(G, nodes_of_interest=None, radius=1, enable_hover=True):
       <div id="3d-graph"></div>
       <script>
         const ENABLE_HOVER = __ENABLE_HOVER__;
+        const TARGET_NODE = __TARGET_NODE__;
         const gData = __GRAPH_DATA__;
         
         // Pre-process graph to index neighbors and links for lightning-fast hover effects
@@ -119,6 +126,21 @@ def generate_graph_html(G, nodes_of_interest=None, radius=1, enable_hover=True):
             .linkDirectionalParticleWidth(2)
             .linkDirectionalArrowLength(3.5)
             .linkDirectionalArrowRelPos(1)
+            .onEngineStop(() => {
+              if (TARGET_NODE && !window.hasZoomed) {
+                  const target = gData.nodes.find(n => n.id.toLowerCase().includes(TARGET_NODE.toLowerCase()) || n.name.toLowerCase().includes(TARGET_NODE.toLowerCase()));
+                  if (target) {
+                      const distance = 150;
+                      const distRatio = 1 + distance/Math.max(Math.hypot(target.x || 0, target.y || 0, target.z || 0), 1);
+                      Graph.cameraPosition(
+                        { x: (target.x || 0) * distRatio, y: (target.y || 0) * distRatio, z: (target.z || 0) * distRatio },
+                        target,
+                        2500
+                      );
+                  }
+                  window.hasZoomed = true;
+              }
+            })
             .onNodeHover(node => {
               if (!ENABLE_HOVER) return;
               // no state change
@@ -162,13 +184,13 @@ def generate_graph_html(G, nodes_of_interest=None, radius=1, enable_hover=True):
     </html>
     """
     
-    html = html_template.replace("__GRAPH_DATA__", json.dumps(graph_data)).replace("__ENABLE_HOVER__", enable_hover_str)
+    html = html_template.replace("__GRAPH_DATA__", json.dumps(graph_data)).replace("__ENABLE_HOVER__", enable_hover_str).replace("__TARGET_NODE__", target_node_str)
     return html
 
 graph_obj = load_graph()
 
-def get_full_graph_html(enable_hover=True):
-    return generate_graph_html(graph_obj, enable_hover=enable_hover)
+def get_full_graph_html(enable_hover=True, hide_docs=False, target_node=""):
+    return generate_graph_html(graph_obj, enable_hover=enable_hover, hide_docs=hide_docs, target_node=target_node)
 
 API_URL = "http://localhost:8000/api/chat"
 API_URL_STREAM = "http://localhost:8000/api/chat_stream"
@@ -179,10 +201,16 @@ st.set_page_config(page_title="NovaChem Intelligence", page_icon="🏭", layout=
 def show_full_graph_dialog():
     st.info("🖱️ **Click & Drag** to rotate 3D space • ⚙️ **Scroll** to zoom in/out • 👆 **Hover** over nodes to reveal names")
     
-    enable_hover = st.toggle("✨ Enable Interactive Hover Effects", value=True, help="Turn this off for smoother manual exploration without flashing highlights.")
+    col1, col2, col3 = st.columns([1.5, 1.5, 2])
+    with col1:
+        enable_hover = st.toggle("✨ Hover Effects", value=True)
+    with col2:
+        hide_docs = st.toggle("🚫 Hide Documents", value=False)
+    with col3:
+        target_node = st.text_input("🎯 Target Lock (Search ID):", placeholder="e.g. P-101")
     
     with st.spinner("Initializing WebGL Engine..."):
-        html = get_full_graph_html(enable_hover=enable_hover)
+        html = get_full_graph_html(enable_hover=enable_hover, hide_docs=hide_docs, target_node=target_node)
         components.html(html, height=700)
 
 # --- SIDEBAR ---
