@@ -300,12 +300,25 @@ with st.sidebar:
     st.divider()
     st.markdown("### 📥 Export Report")
     report_data = generate_report()
+    
+    file_name_input = st.text_input("Report Name:", value="novachem_case_file")
+    export_format = st.radio("Format:", ["Markdown (.md)", "Text (.txt)"], horizontal=True)
+    
+    if export_format == "Markdown (.md)":
+        ext = ".md"
+        mime_type = "text/markdown"
+    else:
+        ext = ".txt"
+        mime_type = "text/plain"
+        
+    final_file_name = f"{file_name_input.strip()}{ext}"
+    
     st.download_button(
-        label="Download Case File (.md)",
+        label=f"Download {ext.upper()} File",
         data=report_data,
-        file_name="novachem_case_file.md",
-        mime="text/markdown",
-        help="Export the current chat history as a markdown report."
+        file_name=final_file_name,
+        mime=mime_type,
+        help="Export the current chat history."
     )
 
 # --- MAIN UI ---
