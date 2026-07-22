@@ -229,6 +229,21 @@ with st.sidebar:
     st.header("⚙️ Settings")
     temperature = st.slider("AI Creativity (Temperature)", min_value=0.0, max_value=1.0, value=0.0, step=0.1, help="0 = Factual/Strict, 1 = Creative/Loose")
     
+    with st.expander("ℹ️ Help & How to Use"):
+        st.markdown("""
+        **1. AI Copilot:**
+        Ask technical questions about equipment, failures, or OISD compliance. The AI strictly cites factual sources.
+        
+        **2. 3D Knowledge Graph:**
+        Click 'Explore Full Graph' to see how data is connected. Type an ID (like `P-101`) in the **Target Lock** to fly the 3D camera directly to it.
+        
+        **3. Equipment Deep Dive:**
+        Select an ID from the dropdown to instantly pull its maintenance history and specifications.
+        
+        **4. Export Case File:**
+        Save your entire investigation as a Markdown or Text report for your records.
+        """)
+    
     st.divider()
     st.markdown("### ⚡ Quick Prompts")
     if st.button("Troubleshoot P-101 Bearing"):
