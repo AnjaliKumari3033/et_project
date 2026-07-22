@@ -6,6 +6,7 @@ import networkx as nx
 import streamlit.components.v1 as components
 import json
 import pandas as pd
+import plotly.express as px
 
 @st.cache_resource
 def load_graph():
@@ -278,6 +279,10 @@ def generate_report():
     return report
 
 with st.sidebar:
+    st.header("👤 Access Control")
+    user_role = st.selectbox("Select User Role:", ["Plant Administrator", "Maintenance Engineer", "Field Operator"], help="Simulates Role-Based Access Control (RBAC)")
+    st.divider()
+
     st.header("⚙️ Settings")
     temperature = st.slider("AI Creativity (Temperature)", min_value=0.0, max_value=1.0, value=0.0, step=0.1, help="0 = Factual/Strict, 1 = Creative/Loose")
     
@@ -293,49 +298,50 @@ with st.sidebar:
     if st.button("Specs for Air Motor"):
         st.session_state.quick_prompt = "What are the specifications for the Air Motor?"
 
-    st.divider()
-    st.markdown("### 🌐 Knowledge Graph")
-    if st.button("Explore Full Graph 🔍"):
-        show_full_graph_dialog()
-
-    st.divider()
-    st.markdown("### 🔍 Equipment Deep Dive")
+    if user_role in ["Plant Administrator", "Maintenance Engineer"]:
+        st.divider()
+        st.markdown("### 🌐 Knowledge Graph")
+        if st.button("Explore Full Graph 🔍"):
+            show_full_graph_dialog()
     
-    # Fetch equipment list from backend
-    try:
-        eq_url = API_URL.replace("/api/chat", "/api/equipment")
-        eq_resp = requests.get(eq_url, timeout=5)
-        if eq_resp.status_code == 200:
-            eq_list = eq_resp.json().get("equipment_ids", [])
-            selected_eq = st.selectbox("Select Equipment ID:", ["-- Select --"] + eq_list)
-            
-            if selected_eq != "-- Select --":
-                detail_url = f"{eq_url}/{selected_eq}"
-                detail_resp = requests.get(detail_url, timeout=5)
-                if detail_resp.status_code == 200:
-                    details = detail_resp.json()
-                    specs = details.get("specs", {})
-                    events = details.get("recent_events", [])
-                    
-                    with st.container(border=True):
-                        st.markdown(f"**Name:** {specs.get('equipment_name', 'N/A')}")
-                        st.markdown(f"**Manufacturer:** {specs.get('manufacturer', 'N/A')}")
-                        st.markdown(f"**Installed:** {specs.get('install_year', 'N/A')}")
+        st.divider()
+        st.markdown("### 🔍 Equipment Deep Dive")
+        
+        # Fetch equipment list from backend
+        try:
+            eq_url = API_URL.replace("/api/chat", "/api/equipment")
+            eq_resp = requests.get(eq_url, timeout=5)
+            if eq_resp.status_code == 200:
+                eq_list = eq_resp.json().get("equipment_ids", [])
+                selected_eq = st.selectbox("Select Equipment ID:", ["-- Select --"] + eq_list)
+                
+                if selected_eq != "-- Select --":
+                    detail_url = f"{eq_url}/{selected_eq}"
+                    detail_resp = requests.get(detail_url, timeout=5)
+                    if detail_resp.status_code == 200:
+                        details = detail_resp.json()
+                        specs = details.get("specs", {})
+                        events = details.get("recent_events", [])
                         
-                        status = specs.get('status', 'N/A')
-                        color = "green" if status == "Active" else "red"
-                        st.markdown(f"**Status:** :{color}[{status}]")
-                        
-                        if events:
-                            st.markdown("**Recent Events:**")
-                            for ev in events:
-                                st.caption(f"• {ev.get('date')} - {ev.get('event_type')}")
-                                if ev.get('downtime_hrs'):
-                                    st.caption(f"  Downtime: {ev.get('downtime_hrs')} hrs")
-                else:
-                    st.error("Failed to load details.")
-    except Exception:
-        st.warning("Backend not running or unreachable.")
+                        with st.container(border=True):
+                            st.markdown(f"**Name:** {specs.get('equipment_name', 'N/A')}")
+                            st.markdown(f"**Manufacturer:** {specs.get('manufacturer', 'N/A')}")
+                            st.markdown(f"**Installed:** {specs.get('install_year', 'N/A')}")
+                            
+                            status = specs.get('status', 'N/A')
+                            color = "green" if status == "Active" else "red"
+                            st.markdown(f"**Status:** :{color}[{status}]")
+                            
+                            if events:
+                                st.markdown("**Recent Events:**")
+                                for ev in events:
+                                    st.caption(f"• {ev.get('date')} - {ev.get('event_type')}")
+                                    if ev.get('downtime_hrs'):
+                                        st.caption(f"  Downtime: {ev.get('downtime_hrs')} hrs")
+                    else:
+                        st.error("Failed to load details.")
+        except Exception:
+            st.warning("Backend not running or unreachable.")
 
     st.divider()
     st.markdown("### 🖥️ System Diagnostics")
@@ -514,38 +520,44 @@ with tab_chat:
 
 with tab_dashboard:
     st.header("📊 Plant Analytics Overview")
-    try:
-        analytics_url = API_URL.replace("/api/chat", "/api/analytics")
-        resp = requests.get(analytics_url, timeout=10)
-        if resp.status_code == 200:
-            data = resp.json()
-            
-            col1, col2 = st.columns(2)
-            
-            with col1:
-                st.subheader("Equipment Status")
-                status_df = pd.DataFrame(data["status_distribution"])
-                if not status_df.empty:
-                    st.bar_chart(status_df.set_index("status"))
-                else:
-                    st.info("No status data available.")
-                    
-            with col2:
-                st.subheader("Event Types Frequency")
-                event_df = pd.DataFrame(data["event_types"])
-                if not event_df.empty:
-                    st.bar_chart(event_df.set_index("event_type"))
-                else:
-                    st.info("No event data available.")
-                    
-            st.subheader("Total Downtime per Equipment (Hrs)")
-            downtime_df = pd.DataFrame(data["downtime_per_equipment"])
-            if not downtime_df.empty:
-                st.bar_chart(downtime_df.set_index("equipment_id"))
-            else:
-                st.info("No downtime data available.")
+    if user_role != "Plant Administrator":
+        st.error("🛑 **Access Denied:** You must be logged in as a Plant Administrator to view analytics.")
+    else:
+        try:
+            analytics_url = API_URL.replace("/api/chat", "/api/analytics")
+            resp = requests.get(analytics_url, timeout=10)
+            if resp.status_code == 200:
+                data = resp.json()
                 
-        else:
-            st.error("Failed to load analytics data.")
-    except Exception as e:
-        st.warning(f"Could not connect to backend to fetch analytics: {e}")
+                col1, col2 = st.columns(2)
+                
+                with col1:
+                    st.subheader("Equipment Status")
+                    status_df = pd.DataFrame(data["status_distribution"])
+                    if not status_df.empty:
+                        fig_status = px.pie(status_df, names="status", values="count", hole=0.5, color_discrete_sequence=px.colors.qualitative.Pastel)
+                        st.plotly_chart(fig_status, use_container_width=True)
+                    else:
+                        st.info("No status data available.")
+                        
+                with col2:
+                    st.subheader("Event Types Frequency")
+                    event_df = pd.DataFrame(data["event_types"])
+                    if not event_df.empty:
+                        fig_event = px.bar(event_df, x="event_type", y="count", color="event_type", color_discrete_sequence=px.colors.qualitative.Vivid)
+                        st.plotly_chart(fig_event, use_container_width=True)
+                    else:
+                        st.info("No event data available.")
+                        
+                st.subheader("Total Downtime per Equipment (Hrs)")
+                downtime_df = pd.DataFrame(data["downtime_per_equipment"])
+                if not downtime_df.empty:
+                    fig_downtime = px.bar(downtime_df, x="equipment_id", y="total_downtime", color="total_downtime", color_continuous_scale="Reds")
+                    st.plotly_chart(fig_downtime, use_container_width=True)
+                else:
+                    st.info("No downtime data available.")
+                    
+            else:
+                st.error("Failed to load analytics data.")
+        except Exception as e:
+            st.warning(f"Could not connect to backend to fetch analytics: {e}")

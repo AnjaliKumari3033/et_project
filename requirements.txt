@@ -26,3 +26,4 @@ pydantic>=2.0
 
 # ---- Frontend (Streamlit) ----
 streamlit>=1.39
+plotly>=5.0
