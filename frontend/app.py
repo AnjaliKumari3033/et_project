@@ -211,7 +211,7 @@ def render_full_graph():
     
     with st.spinner("Initializing WebGL Engine..."):
         html = get_full_graph_html(enable_hover=enable_hover, hide_docs=hide_docs, target_node=target_node)
-        st.iframe(html, height=700)
+        components.html(html, height=700)
 
 @st.dialog("ℹ️ User Guide & Documentation", width="large")
 def show_help_dialog():
