@@ -215,19 +215,55 @@ def show_full_graph_dialog():
 
 @st.dialog("ℹ️ User Guide & Documentation", width="large")
 def show_help_dialog():
-    st.markdown("""
-    ### 1. AI Copilot
-    Ask technical questions about equipment, failures, or OISD compliance. The AI strictly cites factual sources and will not hallucinate answers outside of the ingested technical manuals and P&IDs.
-    
-    ### 2. 3D Knowledge Graph
-    Click 'Explore Full Graph' to see how all data is connected in a physics-based spatial network. Type an Equipment ID (like `P-101`) in the **Target Lock** to automatically fly the 3D camera directly to that node.
-    
-    ### 3. Equipment Deep Dive
-    Select an ID from the sidebar dropdown to instantly pull its maintenance history, lifecycle status, and technical specifications directly from the SQL database.
-    
-    ### 4. Export Case File
-    Save your entire investigation (including cited Knowledge Graph nodes) as a Markdown or Text report for your engineering records using the Export tool.
-    """)
+    st.markdown("### 1. AI Copilot")
+    st.markdown("Ask technical questions about equipment, failures, or OISD compliance. The AI strictly cites factual sources and will not hallucinate.")
+    with st.expander("Read more about the AI Copilot"):
+        st.markdown("""
+        **How it works:**
+        The AI Copilot uses an advanced Retrieval-Augmented Generation (RAG) architecture. It searches a local ChromaDB Vector Database containing thousands of pages of industrial manuals, P&IDs, and maintenance logs. 
+        It then passes the exact context to a local Large Language Model (Qwen-2.5 7B) running on Ollama, ensuring zero data leakage to the cloud. 
+        
+        **Capabilities:**
+        - **Zero Hallucination Guarantee:** If the answer is not in the manuals, the AI will safely refuse to guess.
+        - **Source Citations:** Every claim is backed by a specific document or Knowledge Graph node, which you can audit in the "View Sources" dropdown.
+        """)
+
+    st.markdown("### 2. 3D Knowledge Graph")
+    st.markdown("Click 'Explore Full Graph' to see how all data is connected in a physics-based spatial network.")
+    with st.expander("Read more about the Knowledge Graph"):
+        st.markdown("""
+        **How it works:**
+        The graph is built using NetworkX and rendered in 3D WebGL using the `3d-force-graph` engine. It visualizes the hidden relationships between physical Equipment, historical maintenance Events, and technical Documents.
+        
+        **Features:**
+        - **Target Lock Camera:** Type an equipment ID (like `P-101`) in the search bar. The engine calculates the node's coordinates and automatically flies the 3D camera across the network to zoom in on it.
+        - **Document Filter:** Use the 'Hide Documents' toggle to instantly strip away paperwork nodes, revealing the raw physical relationships between machines.
+        - **Interactive Highlighting:** Hovering over a node illuminates its direct neighbors and dims the rest of the galaxy.
+        """)
+        
+    st.markdown("### 3. Equipment Deep Dive")
+    st.markdown("Select an ID from the sidebar dropdown to instantly pull its maintenance history and technical specs.")
+    with st.expander("Read more about Equipment Analytics"):
+        st.markdown("""
+        **How it works:**
+        This feature bypasses the Vector database and queries a local SQLite relational database directly using FastAPI for instantaneous metrics. 
+        
+        **Capabilities:**
+        - **Instant Specifications:** Pulls manufacturer, installation year, and lifecycle status in milliseconds.
+        - **Downtime Tracking:** Lists all recent failure events and calculates the exact hours of downtime associated with each incident, giving engineers a quick, factual snapshot of machine health.
+        """)
+
+    st.markdown("### 4. Export Case File")
+    st.markdown("Save your entire investigation as a Markdown or Text report for your engineering records.")
+    with st.expander("Read more about Case File Exports"):
+        st.markdown("""
+        **How it works:**
+        When troubleshooting a critical failure, engineers need to save their findings. This tool compiles the entire chat history—including your prompts, the AI's answers, and the specific Knowledge Graph entities referenced—into a clean text document.
+        
+        **Capabilities:**
+        - **Custom Naming:** Name your file according to your plant's naming conventions (e.g., `P101_Investigation`).
+        - **Flexible Formats:** Download as Markdown (`.md`) for clean viewing in modern text editors, or Plain Text (`.txt`) for legacy enterprise systems.
+        """)
 
 # --- SIDEBAR ---
 def generate_report():
